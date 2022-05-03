@@ -70,7 +70,7 @@ class Game:
         
     def update(self):
         self.clock.tick(60)
-        self.tick = (self.tick + 1) % 4294967296
+        self.tick = (self.tick + 1) % 4294967295
         
         # reset the flags
         #self.EXIT = False

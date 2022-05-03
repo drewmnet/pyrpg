@@ -76,7 +76,7 @@ tick = 0
 
 while 1:
     clock.tick(60)
-    tick = (tick + 1) % 4294967296
+    tick = (tick + 1) % 4294967295
     
     dbox.update(tick)
     dbox.render(display)
