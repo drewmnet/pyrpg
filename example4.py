@@ -38,6 +38,7 @@ class DialogueBox:
                 surface.blit(line.label, (10, 10 + 24 * i))
 
 class DialogueLine:
+    # do all methods here get called externally (via DialogueBox)?
     def __init__(self, text, parent): # parent will be DialogueBox
         self.text = text
         self.text_length = len(self.text)+1
@@ -49,16 +50,17 @@ class DialogueLine:
         # flags
         self.ENDED = False
         
-    def update(self, tick):
+    def update(self, tick, parent=None):
         #print("line update")
         if self.cursor == self.text_length:
             #if not self.ENDED: print("ENDED")
             self.ENDED = True
         if tick % 2 == 0 and self.cursor <= self.text_length and not self.ENDED:
             self.cursor += 1
-        self.label = self.parent.font.render(self.text[:self.cursor], 0, (0xff,0xff,0xff))
+            self.label = self.parent.font.render(self.text[:self.cursor], 0, (0xff,0xff,0xff))
+            #self.label = parent.font.render(self.text[:self.cursor], 0, (0xff,0xff,0xff))
             
-    def render(self, surface):
+    def render(self, surface, parent=None):
         if self.cursor < self.text_length:
             self.label = self.parent.font.render(self.text[:self.cursor], 0, (0xff,0xff,0xff))
             surface.blit(self.label, (10,10))
