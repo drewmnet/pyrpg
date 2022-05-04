@@ -42,7 +42,7 @@ class DialogueLine:
     def __init__(self, text, parent): # parent will be DialogueBox
         self.text = text
         self.text_length = len(self.text)+1
-        self.parent = parent
+        self.parent = parent # parent member not required
         
         self.cursor = 0
         self.label = self.parent.font.render("", 0, (0xff,0xff,0xff))
@@ -50,7 +50,7 @@ class DialogueLine:
         # flags
         self.ENDED = False
         
-    def update(self, tick, parent=None):
+    def update(self, tick, parent=None): # DialogueBox will pass itself as parent here
         #print("line update")
         if self.cursor == self.text_length:
             #if not self.ENDED: print("ENDED")
