@@ -1,7 +1,9 @@
 import pygame
 
+# TODO first and second lines get cut off if 'A' button is pressed too early [05/07/22]
+
 class DialogueBox:
-    def __init__(self, font, block_sz):
+    def __init__(self, font, block_sz=0):
         self.font = font
         self.block_sz = block_sz # in this example it is 3
         self.block = 0 # incremented by self.block_sz

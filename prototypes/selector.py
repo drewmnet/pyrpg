@@ -11,7 +11,7 @@ import pygame
 
 class SelectorBox:
     def __init__(self, labels, x, y, width):
-        self.font = pygame.font.Font("dpcomic.ttf", 28)
+        self.font = pygame.font.Font("../dpcomic.ttf", 28)
         self.font_h = self.font.get_height()
         self.labels = labels # a list strings
         
