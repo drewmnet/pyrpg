@@ -1,11 +1,9 @@
-print("importing Game class")
-
 import pygame
 
 from . import camera
 
 class Game:
-    # colour palette
+    # colour palette; if a base ui class (UI_Base) emerges, the palette will be moved there [5/7/22]
     palette = { "light": (0xfa, 0xfb, 0xf6),
                 "shade": (0xc6, 0xb7, 0xbe),
                 "grey": (0x56, 0x5a, 0x75),
@@ -13,7 +11,7 @@ class Game:
               }
               
     # system flags
-    EXIT = False
+    EXIT = False # not sure what I'm going to do with this [5/7/22]
     
     # flags
     verbose = True
@@ -28,8 +26,8 @@ class Game:
         self.tilesize = tilesize * scale
         self.scale = scale
         if self.verbose:
-            print("tilesize: {}".format(self.tilesize))
-            print("scale: {}".format(self.scale))
+            print(f"tilesize: {self.tilesize}")
+            print(f"scale: {self.scale}")
         
         # internal components
         self.clock = pygame.time.Clock()
@@ -55,12 +53,12 @@ class Game:
         if filename not in self.scene_db:
             self.scene_db[filename] = scene.Scene(filename, self)
             if self.verbose:
-                print("loading '{}'".format(filename))
+                print(f"loading '{filename}'")
     
     def setup_scene(self, filename):
         if filename not in self.scene_db:
             #self.load_scene(filename)
-            print("{} not found".format(filename))
+            print("'{filename}' not found")
             pygame.quit()
             exit()
         self.scene = self.scene_db[filename]

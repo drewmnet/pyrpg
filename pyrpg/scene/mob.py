@@ -10,7 +10,7 @@ tupadd = lambda t1, t2: tuple(map(sum, zip(t1,t2)))
 
 def load_sprite(filename, scale):
     filepath = os.path.join('data', 'sprites', filename)
-    print(filepath)
+    #print(filepath)
     ri = pygame.image.load(filepath) # raw image
     ri = pygame.transform.scale(ri, (ri.get_width() * scale, ri.get_height() * scale))
     #raw_image.set_colorkey((128,0,0), pygame.RLEACCEL)
@@ -42,7 +42,7 @@ class Mob(pygame.Rect):
         if filename not in self.game.sprite_db:
             self.game.sprite_db[filename] = load_sprite(filename, game.scale)
             if self.game.verbose:
-                print("spritesheet '{}' not found; loading".format(filename))
+                print(f"spritesheet '{filename}' not found; loading")
         #pygame.Rect.__init__(self, self.game.sprite_db[self.sprite].rect)
         self.spr_fn = filename
         self.game.mob_db[self.uid] = self
