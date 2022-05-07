@@ -1,5 +1,3 @@
-print("importing Tileset class")
-
 import os
 
 from . import utilities

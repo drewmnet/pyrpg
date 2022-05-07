@@ -56,8 +56,9 @@ class Player(mob.Mob):
                             return
                 c,r = utilities.interact(self)
                 for switch in self.game.scene.switches.values():
-                    c_comp = int(switch[0].x/16) == c
-                    r_comp = int(switch[0].y/16) == r
+                    # refactor to take Game.scale into account [05/07/22]
+                    c_comp = switch[0].x // 16 == c
+                    r_comp = switch[0].y // 16 == r
                     if c_comp and r_comp:
                         self.game.next_scene = switch[1]
                         self.game.switching = True

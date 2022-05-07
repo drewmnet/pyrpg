@@ -43,22 +43,24 @@ class Game:
         
         self.player = None
         
-        # components
+        # 'hardware' components
         self.camera = camera.Camera(displaysize, self.tilesize, self)
         #self.ui = 
         #self.fader =         
 
     # TODO deprecate
-    def load_scene(self, filename): # filename needs to be an actual scene instance
-        if filename not in self.scene_db:
-            self.scene_db[filename] = scene.Scene(filename, self)
-            if self.verbose:
-                print(f"loading '{filename}'")
+    # a load_scene method within Game is not required...
+    # ... pass the Game instance within the Scene's constructor [05/07/22]
+    #def load_scene(self, filename): # filename needs to be an actual scene instance
+    #    if filename not in self.scene_db:
+    #        self.scene_db[filename] = scene.Scene(filename, self)
+    #        if self.verbose:
+    #            print(f"loading '{filename}'")
     
     def setup_scene(self, filename):
         if filename not in self.scene_db:
             #self.load_scene(filename)
-            print("'{filename}' not found")
+            print(f"'{filename}' not found")
             pygame.quit()
             exit()
         self.scene = self.scene_db[filename]

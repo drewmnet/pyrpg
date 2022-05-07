@@ -1,5 +1,3 @@
-print("importing scene.utilities (local only)")
-
 import os
 import xml.etree.ElementTree as ET
 
@@ -33,8 +31,8 @@ def load_tileset(filename, width, height, scale=1, colourkey=None, firstgid=1):
     
     gid = int(firstgid)
     textures = {}
-    cols = int(image.get_width() / (width))
-    rows = int(image.get_height() / (height))
+    cols = image.get_width() // width
+    rows = image.get_height() // height
     for row in range(rows):
         for col in range(cols):
             x = col * width
@@ -107,8 +105,8 @@ def get_objects(root, scene):
                     value = propchild.attrib["value"]
                     rectattribs[index] = value
             
-            col = int(float(rectattribs["x"]) / scene.tile_w)
-            row = int(float(rectattribs["y"]) / scene.tile_h)
+            col = float(rectattribs["x"]) // scene.tile_w
+            row = float(rectattribs["y"]) // scene.tile_h
             if rectattribs["type"] == "player":
                 if scene.game.player is None:
                     print("player object is not defined")
@@ -127,8 +125,8 @@ def get_objects(root, scene):
             elif rectattribs["type"] == "switch":
                 uid = rectattribs["id"]
                 scenefile = rectattribs["Filename"]
-                x = int(float(rectattribs["x"]) / scene.tile_w) * scene.tile_w
-                y = int(float(rectattribs["y"]) / scene.tile_h) * scene.tile_h
+                x = (float(rectattribs["x"]) // scene.tile_w) * scene.tile_w
+                y = (float(rectattribs["y"]) // scene.tile_h) * scene.tile_h
                 facing = rectattribs["facing"] # TODO
 #               try:
                 c = int(rectattribs["col"])

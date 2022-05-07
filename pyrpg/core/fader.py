@@ -1,5 +1,3 @@
-print("importing Fader class")
-
 import pygame
 
 class Fader:

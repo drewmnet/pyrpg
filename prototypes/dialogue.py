@@ -1,8 +1,10 @@
 import pygame
 
 class DialogueBox:
-    def __init__(self, font):
+    def __init__(self, font, block_sz):
         self.font = font
+        self.block_sz = block_sz # in this example it is 3
+        self.block = 0 # incremented by self.block_sz
         self.lines = []
         self.lines.append(DialogueLine("Prototype dialogue box.", self))
         self.lines.append(DialogueLine("Gets the job done for now.", self))
@@ -12,7 +14,8 @@ class DialogueBox:
         self.visible = True
         
         # flags
-        self.COMPLETE = False
+        self.COMPLETE = False # what to call the end of a line
+                              # when there is text remaining? [05/07/22]
         
     def update(self, tick):        
         for event in pygame.event.get():
@@ -29,7 +32,7 @@ class DialogueBox:
             if self.lines[self.current].ENDED:# & self.current < len(self.lines):
                 self.current += 1
         elif not self.COMPLETE and self.lines[-1].ENDED:
-            print("complete")
+            print("complete") # debug; deprecate [05/07/22]
             self.COMPLETE = True
             
     def render(self, surface):

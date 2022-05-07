@@ -1,5 +1,3 @@
-print("importing Camera class")
-
 import operator
 
 import pygame
@@ -19,8 +17,8 @@ class Camera(pygame.Rect):
     
     def setup(self, filename): # scene setup
         self.following = self.game.player
-        self.cols = int(self.w / self.tilesize + 2)
-        self.rows = int(self.h / self.tilesize + 2)
+        self.cols = self.w // self.tilesize + 2
+        self.rows = self.h // self.tilesize + 2
         self.blank = pygame.Surface((self.tilesize,self.tilesize)).convert()
         self.blank.fill((0,0,0))
         self.scene_rect.w = (self.game.scene.cols) * self.tilesize
@@ -32,14 +30,15 @@ class Camera(pygame.Rect):
         self.game.player.moving = False
         #self.game.scene.script.init()
         #self.update() # centre camera on camera.following before fade_in begins
+        # test this when fader is re-implemented [05/07/22]
         self.center = self.following.center #???
 
     def tile_prep(self, layer, col, row):
         x_offset = self.x % self.tilesize
         y_offset = self.y % self.tilesize
 
-        c_index = int(self.x / self.tilesize + col)
-        r_index = int(self.y / self.tilesize + row)
+        c_index = self.x // self.tilesize + col
+        r_index = self.y // self.tilesize + row
     
         index = self.game.scene.get_tile(layer, (c_index,r_index))
 

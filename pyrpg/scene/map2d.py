@@ -1,5 +1,3 @@
-print("importing Scene class")
-
 from . import utilities
 
 class Map2D:
