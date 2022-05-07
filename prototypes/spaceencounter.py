@@ -1,4 +1,5 @@
-
+# a simple logic tree that would be used for travel between planets
+# similar to overland travel in Pathfinder
 
 from random import random as rnd
 
