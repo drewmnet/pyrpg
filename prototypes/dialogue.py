@@ -54,12 +54,13 @@ class DialogueLine:
         self.ENDED = False
         
     def update(self, tick, parent): # DialogueBox will pass itself as parent here
+        if tick % 2 == 0 and self.cursor < self.text_length:
+            self.cursor += 1
+        if not self.ENDED:
+            self.label = parent.font.render(self.text[:self.cursor], 0, (0xff,0xff,0xff))
         if self.cursor == self.text_length:
             self.ENDED = True
-        if tick % 2 == 0 and self.cursor <= self.text_length and not self.ENDED:
-            self.cursor += 1
-            self.label = parent.font.render(self.text[:self.cursor], 0, (0xff,0xff,0xff))
-
+        
 pygame.init()
 
 display = pygame.display.set_mode((400,400))
