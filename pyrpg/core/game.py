@@ -5,6 +5,13 @@ import pygame
 from . import camera
 
 class Game:
+    # colour palette
+    palette = { light: (0xfa, 0xfb, 0xf6),
+                shade: (0xc6, 0xb7, 0xbe),
+                grey: (0x56, 0x5a, 0x75),
+                dark: (0x0f, 0x0f, 0x1b)
+              }
+              
     # system flags
     EXIT = False
     
@@ -14,7 +21,7 @@ class Game:
     def __init__(self, displaysize=(640,480), tilesize=16, scale=1):
         # pygame genesis
         pygame.init()
-        pygame.display.set_caption("srpge (2022, drewmnet)")
+        pygame.display.set_caption("pyrpg (drewmnet 2022)")
         
         # constructor argument assignment
         self.display = pygame.display.set_mode(displaysize)
