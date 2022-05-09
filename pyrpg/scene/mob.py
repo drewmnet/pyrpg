@@ -16,6 +16,9 @@ def load_sprite(filename, scale):
     #raw_image.set_colorkey((128,0,0), pygame.RLEACCEL)
     w = 16 * scale
     h = 16 * scale
+    
+    # strip format; single frame for each direction
+    #  remove this and replace with animated sprite [05/08/22]
     sprite = { "south": None, "north": None, "west": None, "east": None }
     sprite["south"] = ri.subsurface((0,0,w,h))
     sprite["north"] = ri.subsurface((0,h*1,w,h))
