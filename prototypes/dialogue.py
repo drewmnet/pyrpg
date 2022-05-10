@@ -15,6 +15,7 @@ class DialogueBox:
         self.visible = True
         
         # flags
+        self.BLOCKENDED = False
         self.COMPLETE = False # what to call the end of a line
                               # when there is text remaining? [05/07/22]
         #self.load_block()
@@ -28,19 +29,19 @@ class DialogueBox:
     def update(self, tick):        
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RCTRL:
-                    for line in self.lines:
-                        line.cursor = line.text_length-1
-                        line.update(tick, self)
-                        self.current = -1 # so the next line will work
+                if event.key == pygame.K_RCTRL: # 'A' button
                     if self.COMPLETE:
                         self.visible = False
+                    else:
+                        for line in self.lines:
+                            line.cursor = line.text_length-1
+                            line.update(tick, self)
+                            self.current = -1 # so the next line will work
         if not self.lines[-1].ENDED:
             self.lines[self.current].update(tick, self)
             if self.lines[self.current].ENDED:# & self.current < len(self.lines):
                 self.current += 1
         elif not self.COMPLETE and self.lines[-1].ENDED:
-            print("complete") # debug; deprecate [05/07/22]
             self.COMPLETE = True
             
     def render(self, surface):
@@ -96,3 +97,6 @@ while 1:
     pygame.display.flip()
     display.fill((0,0,0))
 
+    #if dbox.COMPLETE:
+    #    pygame.time.wait(1000)
+    #    exit()
