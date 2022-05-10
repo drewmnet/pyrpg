@@ -14,15 +14,14 @@ class DialogueBox:
         self.current = 0 # current line
         self.visible = True
         
-        # flags
-        self.BLOCKENDED = False
-        self.COMPLETE = False # what to call the end of a line
+        self.blockended = False
+        self.complete = False # what to call the end of a line
                               # when there is text remaining? [05/07/22]
         #self.load_block()
     
     def load_block(self):
         self.current = 0
-        self.COMPLETE = False
+        self.complete = False
         for l, text in enumerate(self.text[self.block:self.block+self.block_sz]):
             self.lines[l].load_text(text, self)
         
@@ -30,19 +29,19 @@ class DialogueBox:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RCTRL: # 'A' button
-                    if self.COMPLETE:
+                    if self.complete:
                         self.visible = False
                     else:
                         for line in self.lines:
                             line.cursor = line.text_length-1
                             line.update(tick, self)
                             self.current = -1 # so the next line will work
-        if not self.lines[-1].ENDED:
+        if not self.lines[-1].ended:
             self.lines[self.current].update(tick, self)
-            if self.lines[self.current].ENDED:# & self.current < len(self.lines):
+            if self.lines[self.current].ended:# & self.current < len(self.lines):
                 self.current += 1
-        elif not self.COMPLETE and self.lines[-1].ENDED:
-            self.COMPLETE = True
+        elif not self.complete and self.lines[-1].ended:
+            self.complete = True
             
     def render(self, surface):
         if self.visible:
@@ -57,8 +56,7 @@ class DialogueLine:
         self.text = ""
         self.text_length = 0 #len(self.text)+1
                 
-        # flags
-        self.ENDED = False
+        self.ended = False
 
     def load_text(self, text, parent):
         self.cursor = 0
@@ -69,10 +67,10 @@ class DialogueLine:
     def update(self, tick, parent): # DialogueBox will pass itself as parent here
         if tick % 2 == 0 and self.cursor < self.text_length:
             self.cursor += 1
-        if not self.ENDED:
+        if not self.ended:
             self.label = parent.font.render(self.text[:self.cursor], 0, (0xff,0xff,0xff))
         if self.cursor == self.text_length:
-            self.ENDED = True
+            self.ended = True
         
 pygame.init()
 
@@ -97,6 +95,6 @@ while 1:
     pygame.display.flip()
     display.fill((0,0,0))
 
-    #if dbox.COMPLETE:
+    #if dbox.complete:
     #    pygame.time.wait(1000)
     #    exit()
