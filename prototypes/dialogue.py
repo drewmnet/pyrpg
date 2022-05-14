@@ -1,9 +1,7 @@
 import pygame
 
-# TODO first and second lines get cut off if 'A' button is pressed too early [05/07/22]
-
 class DialogueBox:
-    def __init__(self, font, block_sz=3):
+    def __init__(self, font, x, y, block_sz=3):
         self.font = font
         self.block_sz = block_sz # in this example it is 3
         self.block = 0 # incremented by self.block_sz
@@ -16,8 +14,11 @@ class DialogueBox:
         self._visible = True        
         self._blockended = False
         self._complete = False # what to call the end of a line
-                              # when there is text remaining? [05/07/22]
+                               # when there is text remaining? [05/07/22]
         #self.load_block()
+        
+        self.rect = (x, y, 10,10) # TODO [05/13/22]
+        self.pad = 5
     
     def load_block(self):
         self._current = 0
@@ -45,8 +46,11 @@ class DialogueBox:
             
     def render(self, surface):
         if self._visible:
+            #pygame.draw.rect(surface, grey, self.rect)
             for i, line in enumerate(self.lines):
-                surface.blit(line.label, (10, 10 + 24 * i))
+                x = self.rect[0] + self.pad
+                y = self.rect[1] + self.font.get_height() * i + self.pad
+                surface.blit(line.label, (x, y))
 
 class DialogueLine:
     def __init__(self, parent):#text, parent): # parent=DialogueBox
@@ -77,9 +81,9 @@ pygame.init()
 display = pygame.display.set_mode((400,400))
 clock = pygame.time.Clock()
 
-font = pygame.font.Font(None, 24)
+font = pygame.font.Font("../dpcomic.ttf", 24)
 
-dbox = DialogueBox(font)
+dbox = DialogueBox(font, 10, 10)
 dbox.text = ["This is line 1", "This is line 2", "This is line 3"]
 dbox.load_block()
 

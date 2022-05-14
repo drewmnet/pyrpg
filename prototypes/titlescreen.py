@@ -10,7 +10,7 @@ class TitleScreen:
     
     def render(self, surface):
         x = (surface.get_width() - self.titlelabel.get_width()) / 2
-        y = 30
+        y = 90
         surface.blit(self.titlelabel, (x,y))
 
 pygame.init()

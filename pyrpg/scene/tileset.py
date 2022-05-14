@@ -17,11 +17,11 @@ class Tileset:
                                           scale,
                                           colourkey,
                                           firstgid)
-        print(textures)
+        #print(textures)
         self.textures.update(textures)
                 
-    def __getitem__(self, key=-1):
-        if key == -1:
-            return self.textures
-        if key != -1:
+    def __getitem__(self, key=None):
+        if key is not None:
             return self.textures[key]
+        else:
+            return self.textures
