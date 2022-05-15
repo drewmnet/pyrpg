@@ -11,12 +11,12 @@ class Game:
               }
               
     # system flags
-    EXIT = False # not sure what I'm going to do with this [5/7/22]
+    exiting = False # not sure what I'm going to do with this [5/7/22]
     
     # flags
     verbose = True
         
-    def __init__(self, displaysize=(640,480), tilesize=16, scale=1):
+    def __init__(self, displaysize, tilesize, scale):
         # pygame genesis
         pygame.init()
         pygame.display.set_caption("pyrpg (drewmnet 2022)")
@@ -26,8 +26,8 @@ class Game:
         self.tilesize = tilesize * scale
         self.scale = scale
         if self.verbose:
-            print(f"tilesize: {self.tilesize}")
-            print(f"scale: {self.scale}")
+            print(f"tilesize: {tilesize}")
+            print(f"scale: {scale}")
         
         # internal components
         self.clock = pygame.time.Clock()
@@ -43,8 +43,8 @@ class Game:
         
         self.player = None
         
-        # 'hardware' components
-        self.camera = camera.Camera(displaysize, self.tilesize, self)
+        # peripherals
+        self.camera = camera.Camera(displaysize, tilesize * scale, (0,0), self)
         #self.ui = 
         #self.fader =         
 

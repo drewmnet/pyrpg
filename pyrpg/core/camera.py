@@ -3,8 +3,12 @@ import operator
 import pygame
 
 class Camera(pygame.Rect):
-    def __init__(self, displaysize, tilesize, game, x=0, y=0):
-        pygame.Rect.__init__(self, (x,y)+displaysize)
+    def __init__(self, displaysize: tuple, 
+                       tilesize: int, 
+                       location: tuple,
+                       game: "game.Game"):
+                       
+        pygame.Rect.__init__(self, location+displaysize)
         self.tilesize = tilesize
         self.game = game
         

@@ -1,10 +1,11 @@
 import pygame
 
 class DialogueBox:
-    def __init__(self, font, x, y, block_sz=3):
+    def __init__(self, font, x, y, block_sz, background):
         self.font = font
         self.block_sz = block_sz # in this example it is 3
         self.block = 0 # incremented by self.block_sz
+        self.background = background
         
         self.lines = [ DialogueLine(self) for _ in range(block_sz) ]
         
@@ -21,8 +22,9 @@ class DialogueBox:
         self.pad = 5
     
     def load_block(self):
-        self._current = 0
+        self._current = 0 # future proofed for larger blocks of text
         self._complete = False
+        # TODO error check for text list size > self.block_sz [05/14/22]
         for l, text in enumerate(self.text[self.block:self.block+self.block_sz]):
             self.lines[l].load_text(text, self)
         
@@ -46,7 +48,8 @@ class DialogueBox:
             
     def render(self, surface):
         if self._visible:
-            #pygame.draw.rect(surface, grey, self.rect)
+            #if self.background is not None:
+                #pygame.draw.rect(surface, grey, self.rect)
             for i, line in enumerate(self.lines):
                 x = self.rect[0] + self.pad
                 y = self.rect[1] + self.font.get_height() * i + self.pad
@@ -83,7 +86,7 @@ clock = pygame.time.Clock()
 
 font = pygame.font.Font("../dpcomic.ttf", 24)
 
-dbox = DialogueBox(font, 10, 10)
+dbox = DialogueBox(font, 10, 10, 3, None)
 dbox.text = ["This is line 1", "This is line 2", "This is line 3"]
 dbox.load_block()
 

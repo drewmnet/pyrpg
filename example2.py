@@ -6,8 +6,12 @@ from pyrpg.core import *    # Game, Camera, Fader...
 from pyrpg.scene import *   # Map2D, Tileset, Sprite, Mob, Player...
 from pyrpg.ui import *      # TitleScreen, Dialogue, Selector, PlayerMenu...
 
+DISPLAYSIZE = (640, 480)
+TILESIZE = 16
+SCALE = 3
+
 # initialize the game object
-game = Game(scale=3) # pygame.init() and display.set_mode are called
+game = Game(DISPLAYSIZE, TILESIZE, SCALE) # pygame.init() and display.set_mode are called
 
 # add sprites to Game.spr_db
 #Sprite("spr_felix.png", game)
@@ -28,7 +32,7 @@ running = True
 while running:
     game.player.get_events()
     
-    if game.EXIT:
+    if game.exiting:
         print("exiting example2")
         pygame.quit()
         exit()
