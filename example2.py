@@ -23,7 +23,7 @@ game.player = Player("spr_felix.png", game)
 # add a scene to Game.map_db...
 Map2D("cabin_exterior.tmx", game)
 # ... and setup the camera for the scene
-game.setup_scene("cabin_exterior.tmx")
+game.camera.setup("cabin_exterior.tmx", game)
 
 # set the camera to follow game.player
 game.camera.following = game.player
@@ -41,7 +41,7 @@ while running:
     game.player.update()
     game.camera.update()
     
-    game.camera.render()
+    game.camera.render(game) # TODO move to game.render()
 
     pygame.display.flip()
     game.display.fill((0,0,0))

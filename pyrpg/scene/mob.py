@@ -74,7 +74,7 @@ class Mob(pygame.Rect):
             if m != self and cell == m.tile_location():
                 no_mob = False
         
-        tile = self.game.scene.get_tile("collide", cell)        
+        tile = self.game.camera.scene.get_tile("collide", cell)        
         nocollide = tile == '0' and no_mob
         movable = not self.moving #and not self.game.fader.fading
         
