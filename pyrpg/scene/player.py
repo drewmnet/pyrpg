@@ -15,8 +15,7 @@ class Player(mob.Mob):
         for event in pygame.event.get(): #[1]
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    exit()
-                    self.game.ending = True
+                    self.game.exiting = True
                     #self.game.fader.fade_out()
                 if event.key == pygame.K_RETURN:
                     if self.game.camera.following == None:

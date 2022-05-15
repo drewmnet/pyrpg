@@ -2,7 +2,7 @@ from . import utilities
 
 class Map2D:
     def __init__(self, filename, game):
-        if filename not in game.scene_db:
+        if filename not in game.scene_db: # is this needed? [05/15/22]
             self.filename = filename
             self.game = game
             # loading stuff

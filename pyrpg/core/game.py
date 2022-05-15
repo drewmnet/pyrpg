@@ -56,13 +56,21 @@ class Game:
         while self.running:
             self.update()
             self.render()
+            
+            self.running = not self.exiting
         
     def update(self):
         self.clock.tick(60)
         self.tick = (self.tick + 1) % 0xffffffff
         
+        self.player.get_events()
+        
+        self.player.update()
+        self.camera.update()
         # reset the flags
         #self.EXIT = False
         
     def render(self):
         self.camera.render(self)
+        
+        pygame.display.flip()
