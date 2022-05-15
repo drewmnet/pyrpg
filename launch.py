@@ -24,12 +24,14 @@ game.focus = game.titlescreen
 
 # title menu
 # if "New Game" is selected:
-#game.player = pyrpg.scene.Player("spr_felix.png", game)
+game.player = pyrpg.scene.Player("spr_felix.png", game)
 # add a scene to Game.map_db...
-#pyrpg.scene.Map2D("podunk.tmx", game)
+pyrpg.scene.Map2D("podunk.tmx", game)
 # ... and setup the camera for the scene
 #game.camera.setup("podunk.tmx", game)
 # set the camera to follow game.player
-#game.camera.following = game.player
+game.camera.following = game.player
+
+#game.focus = game.camera
 
 game.start()

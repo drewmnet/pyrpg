@@ -5,6 +5,8 @@ import pygame
 
 from . import tileset
 
+tupadd = lambda t1, t2: tuple(map(sum, zip(t1,t2)))
+
 def load_image(filename, colourkey=None):
     image = pygame.image.load(filename)
     if image != None:

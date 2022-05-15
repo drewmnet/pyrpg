@@ -61,8 +61,9 @@ class Camera(pygame.Rect):
     def y_sort(self, game): # TODO move this back to utilities [05/14/22]
         return sorted(self.scene.get_mobs(), key=operator.attrgetter('y'))
             
-    def update(self): # this needn't be called every cycle
+    def update(self, tick): # this needn't be called every cycle
         #x,y = self.following.center
+        self.scene.update(tick)
         if self.following: # clamp stuff        
             if self.center[0] < self.following.center[0]:
                 self.move_ip((2,0))
@@ -74,28 +75,28 @@ class Camera(pygame.Rect):
                 self.move_ip((0,-2))
             self.clamp_ip(self.scene_rect) # the good news: it's not this that's making the cpu jump to 20%
 
-    def render(self, game):    
+    def render(self, surface):    
         for row in range(self.rows): # draw the bottom and middle tile layers
             for col in range(self.cols):
-                bottom_t, x, y = self.tile_prep("bottom", col, row, game)
-                middle_t, x, y = self.tile_prep("middle", col, row, game)
+                bottom_t, x, y = self.tile_prep("bottom", col, row, self.game)
+                middle_t, x, y = self.tile_prep("middle", col, row, self.game)
                 # yes, the above line overrides the x and y values
                 #  in the line above it
                 
                 if bottom_t != "0":
-                    game.display.blit(bottom_t, (x,y))
+                    surface.blit(bottom_t, (x,y))
                 elif bottom_t == "0":
-                    game.display.blit(self.blank, (x,y))
+                    surface.blit(self.blank, (x,y))
 
                 if middle_t != "0":
-                    game.display.blit(middle_t, (x,y))
+                    surface.blit(middle_t, (x,y))
 
         if self.scene.mobs: # draw the sprites
             #for sprite in game.scene.sprites.values():
-            for sprite in self.y_sort(game):
-                sprite.render(game.display, x_off = -self.x, y_off = -self.y)
+            for sprite in self.y_sort(self.game):
+                sprite.render(surface, x_off = -self.x, y_off = -self.y)
         
         for row in range(self.rows): # draw the top layer
             for col in range(self.cols):
-                tile, x, y = self.tile_prep("top", col, row, game)
-                if tile != "0": game.display.blit(tile, (x, y))
+                tile, x, y = self.tile_prep("top", col, row, self.game)
+                if tile != "0": surface.blit(tile, (x, y))

@@ -36,7 +36,7 @@ class Player(mob.Mob):
             self.move("east")
         elif keys[pygame.K_LEFT]:
             self.move("west")
-
+'''
         if not self.moving: #TODO move this to event loop
             # priority of "A" button check:
             #  sprite check (mobs, furnis, etc.,)
@@ -63,5 +63,5 @@ class Player(mob.Mob):
                         self.game.switching = True
                         self.game.fader.fade_out()
             elif not keys[pygame.K_RCTRL] and self.a_button == 1:
-                self.a_button = 0
+                self.a_button = 0'''
 

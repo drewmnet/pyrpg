@@ -17,7 +17,9 @@ class Map2D:
     
     # what if I pulled update into render so I wouldn't have to iterate twice? TODO        
     def update(self, tick):
-        for mob in self.mobs.values():
+        self.game.player.get_events() # TODO find out why this isn't in self.live_mobs
+        self.game.player.update()
+        for mob in self.live_mobs.values():
             mob.update(tick)
             
     def render(self, surface):

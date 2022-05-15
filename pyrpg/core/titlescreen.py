@@ -12,8 +12,14 @@ class TitleScreen:
     def update(self, tick):
         """ Assumes game.ui["newexit"] has been instantiated """
         self.game.ui["newexit"].get_input()
+        if self.game.ui["newexit"].rvalue == 0:
+            # clear events
+            self.game.camera.setup("podunk.tmx", self.game)
+            self.game.focus = self.game.camera
+            self.game.ui["newexit"].rvalue = None
         if self.game.ui["newexit"].rvalue == 1:
             self.game.exiting = True
+            self.game.ui["newexit"].rvalue = None
             print("kupo!")
     
     def render(self, surface):
