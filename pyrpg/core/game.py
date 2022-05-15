@@ -3,17 +3,7 @@ import pygame
 from . import camera
 
 class Game:
-    # colour palette; if a base ui class (UI_Base) emerges, the palette will be moved there [5/7/22]
-    palette = { "light": (0xfa, 0xfb, 0xf6),
-                "shade": (0xc6, 0xb7, 0xbe),
-                "grey": (0x56, 0x5a, 0x75),
-                "dark": (0x0f, 0x0f, 0x1b)
-              }
-              
-    # system flags
-    exiting = False # not sure what I'm going to do with this [5/7/22]
-    
-    # flags
+    exiting = False
     verbose = True
         
     def __init__(self, displaysize, tilesize, scale):
@@ -43,11 +33,12 @@ class Game:
         
         self.player = None
         
-        # peripherals
+        # peripherals TODO initialize peripherals externally in launch.py [05/15/22]
         self.camera = camera.Camera(displaysize, tilesize * scale, (0,0), self)
         #self.ui = 
-        #self.fader =         
-
+        #self.fader =
+        self.focus = None        
+        
     def start(self):
         self.running = True
         self.main()
@@ -63,14 +54,19 @@ class Game:
         self.clock.tick(60)
         self.tick = (self.tick + 1) % 0xffffffff
         
-        self.player.get_events()
+        if self.focus is not None:
+            self.focus.update(self.tick)
+        #self.player.get_events()
         
-        self.player.update()
-        self.camera.update()
+        #self.player.update()
+        #self.camera.update()
         # reset the flags
-        #self.EXIT = False
+        #self.exiting = False
         
     def render(self):
-        self.camera.render(self)
+        #self.camera.render(self)
+        if self.focus is not None:
+            self.focus.render(self.display)
         
         pygame.display.flip()
+        self.display.fill((0,0,0))

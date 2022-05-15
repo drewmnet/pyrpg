@@ -55,13 +55,15 @@ class Mob(pygame.Rect):
         self.y = row * self.game.tilesize
 
     def spawn(self, filename): # filename = Scene.uid and dict key    
-        self.scene = self.game.scene_db[filename]
+        self.scene = self.game.scene_db[filename] # TODO deprecate [05/15/22]
+        # these lines below are the key to this method
         col, row = self.scene.defaults[self.uid]
         self.place(col, row)
         self.facing = "south"
 
     def tile_location(self):
-        return (int(self.x/self.game.tilesize), int(self.y/self.game.tilesize))
+        return (self.x // self.game.tilesize, self.y // self.game.tilesize)
+        # self.scene.tilesize?
 
     def move(self, direction):
         if not self.moving: # separate from line 78 so facing direction could change independently and

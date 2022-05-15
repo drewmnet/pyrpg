@@ -33,7 +33,7 @@ class Camera(pygame.Rect):
         # reset mobs in scene to default positions and facings
         for mob_fn in self.scene.mobs:
             game.mob_db[mob_fn].spawn(filename)
-        
+            
         self.game.player.moving = False
         #self.game.scene.script.init()
         #self.update() # centre camera on camera.following before fade_in begins

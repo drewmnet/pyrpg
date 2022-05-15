@@ -9,15 +9,15 @@ class Map2D:
             game.scene_db[filename] = self
 
             self.defaults = {} # default positions of mobs
-            self.mobs = []
-            self.live_mobs = {}
+            self.mobs = [] # update all mobs
+            self.live_mobs = {} # but render only live_mobs
             self.layerdata = { "bottom": None, "middle": None, "top": None, "collide": None }
 
             utilities.load_tmx(self.filename, self)
     
     # what if I pulled update into render so I wouldn't have to iterate twice? TODO        
     def update(self, tick):
-        for mob in self.live_mobs.values():
+        for mob in self.mobs.values():
             mob.update(tick)
             
     def render(self, surface):

@@ -3,26 +3,23 @@ print("importing UI class [EMPTY]")
 
 import pygame
 
+from . import theme
+#from . import selector
+
 class UI:
     def __init__(self, game):
         self.game = game
         
         # theme
-        self.bgcolour
-        self.alpha
-        self.font
+        self.theme = theme.Theme()
         
+        self.children = {}
         
-        self.children = { "DLG": None,
-                          "YN": None,
-                          "MNU": None,
-                          "HUD": None
-                        }
+    def __getitem__(self, key):
+        return self.children[key]
+    
+    def __setitem__(self, key, value):
+        self.children[key] = value
         
-    def __getitem__(self, key=-1):
-        if key == -1:
-            return self.textures
-        else:
-            return self.textures[key]
-
-from .dialogue import Dialogue
+#from .dialogue import Dialogue
+from .selector import Selector
