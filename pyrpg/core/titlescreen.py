@@ -14,7 +14,7 @@ class TitleScreen:
         self.game.ui["newexit"].get_input()
         if self.game.ui["newexit"].rvalue == 0:
             # clear events
-            self.game.camera.setup("podunk.tmx", self.game)
+            self.game.camera.setup("podunk.tmx")
             self.game.focus = self.game.camera
             self.game.ui["newexit"].rvalue = None
         if self.game.ui["newexit"].rvalue == 1:

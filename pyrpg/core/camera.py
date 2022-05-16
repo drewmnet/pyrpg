@@ -3,10 +3,10 @@ import operator
 import pygame
 
 class Camera(pygame.Rect):
-    def __init__(self, displaysize, tilesize, location, game):
+    def __init__(self, game, location):
+        self.game = game
         pygame.Rect.__init__(self, location+game.display.get_size())
         self.tilesize = game.tilesize
-        self.game = game
         
         self.cols = 0
         self.rows = 0
@@ -15,15 +15,15 @@ class Camera(pygame.Rect):
 
         self.scene_rect = pygame.Rect((0,0,0,0))
     
-    def setup(self, filename, game): # get filename from game.scene_db
-        if filename not in game.scene_db:
+    def setup(self, filename): # get filename from game.scene_db
+        if filename not in self.game.scene_db:
             #self.load_scene(filename)
             print(f"'{filename}' not found")
             pygame.quit()
             exit()
-        self.scene = game.scene_db[filename]
+        self.scene = self.game.scene_db[filename]
     
-        self.following = game.player
+        self.following = self.game.player
         self.cols = self.w // self.tilesize + 2 # for the display
         self.rows = self.h // self.tilesize + 2 # not to be confused with the cols/rows of Map2D
         self.blank = pygame.Surface((self.tilesize,self.tilesize)).convert()
@@ -32,7 +32,7 @@ class Camera(pygame.Rect):
         self.scene_rect.h = (self.scene.rows) * self.tilesize
         # reset mobs in scene to default positions and facings
         for mob_fn in self.scene.mobs:
-            game.mob_db[mob_fn].spawn(filename)
+            self.game.mob_db[mob_fn].spawn(filename)
             
         self.game.player.moving = False
         #self.game.scene.script.init()
@@ -40,7 +40,7 @@ class Camera(pygame.Rect):
         # test this when fader is re-implemented [05/07/22]
         self.center = self.following.center #???
 
-    def tile_prep(self, layer, col, row, game):
+    def tile_prep(self, layer, col, row):
         x_offset = self.x % self.tilesize
         y_offset = self.y % self.tilesize
 
@@ -58,7 +58,7 @@ class Camera(pygame.Rect):
         else:			
             return ("0", x, y)
     
-    def y_sort(self, game): # TODO move this back to utilities [05/14/22]
+    def y_sort(self): # TODO move this back to utilities [05/14/22]
         return sorted(self.scene.get_mobs(), key=operator.attrgetter('y'))
             
     def update(self, tick): # this needn't be called every cycle
@@ -78,8 +78,8 @@ class Camera(pygame.Rect):
     def render(self, surface):    
         for row in range(self.rows): # draw the bottom and middle tile layers
             for col in range(self.cols):
-                bottom_t, x, y = self.tile_prep("bottom", col, row, self.game)
-                middle_t, x, y = self.tile_prep("middle", col, row, self.game)
+                bottom_t, x, y = self.tile_prep("bottom", col, row)
+                middle_t, x, y = self.tile_prep("middle", col, row)
                 # yes, the above line overrides the x and y values
                 #  in the line above it
                 
@@ -93,10 +93,10 @@ class Camera(pygame.Rect):
 
         if self.scene.mobs: # draw the sprites
             #for sprite in game.scene.sprites.values():
-            for sprite in self.y_sort(self.game):
+            for sprite in self.y_sort():
                 sprite.render(surface, x_off = -self.x, y_off = -self.y)
         
         for row in range(self.rows): # draw the top layer
             for col in range(self.cols):
-                tile, x, y = self.tile_prep("top", col, row, self.game)
+                tile, x, y = self.tile_prep("top", col, row)
                 if tile != "0": surface.blit(tile, (x, y))

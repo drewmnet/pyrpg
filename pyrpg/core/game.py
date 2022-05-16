@@ -34,7 +34,7 @@ class Game:
         self.player = None
         
         # peripherals TODO initialize peripherals externally in launch.py [05/15/22]
-        self.camera = camera.Camera(displaysize, tilesize * scale, (0,0), self)
+        self.camera = camera.Camera(self, (0,0))
         #self.ui = 
         #self.fader =
         self.focus = None        
