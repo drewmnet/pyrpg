@@ -37,8 +37,9 @@ class Game:
         self.camera = camera.Camera(self, (0,0))
         #self.ui = 
         #self.fader =
-        self.focus = None        
-        
+        self.focus = None
+        self.renderlist = []
+
     def start(self):
         self.running = True
         self.main()
@@ -67,6 +68,9 @@ class Game:
         #self.camera.render(self)
         if self.focus is not None:
             self.focus.render(self.display)
+        #for item in self.renderlist:
+        #    item.render(self.display)
+        
         
         pygame.display.flip()
         self.display.fill((0,0,0))
