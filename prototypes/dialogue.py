@@ -1,13 +1,13 @@
 import pygame
 
 class DialogueBox:
-    def __init__(self, font, x, y, block_sz, background):
+    def __init__(self, font, x, y, block_size, background):
         self.font = font
-        self.block_sz = block_sz # in this example it is 3
-        self.block = 0 # incremented by self.block_sz
+        self.block_size = block_size # in this example it is 3
+        self.block = 0 # incremented by self.block_size
         self.background = background
         
-        self.lines = [ DialogueLine(self) for _ in range(block_sz) ]
+        self.lines = [ DialogueLine(self) for _ in range(block_size) ]
         
         self.text = []
         
@@ -24,8 +24,9 @@ class DialogueBox:
     def load_block(self):
         self._current = 0 # future proofed for larger blocks of text
         self._complete = False
-        # TODO error check for text list size > self.block_sz [05/14/22]
-        for l, text in enumerate(self.text[self.block:self.block+self.block_sz]):
+        #self._blockended = False
+        # TODO error check for text list size > self.block_size [05/14/22]
+        for l, text in enumerate(self.text[self.block:self.block+self.block_size]):
             self.lines[l].load_text(text, self)
         
     def update(self, tick):        
@@ -34,16 +35,16 @@ class DialogueBox:
                 if event.key == pygame.K_RCTRL: # 'A' button
                     if self._complete:
                         self._visible = False
-                    else:
+                    else: # skip to the end of the dialogue block
                         for line in self.lines:
                             line.cursor = line.text_length-1
                             line.update(tick, self)
                             self.current = -1 # so the next line will work
-        if not self.lines[-1].ended:
-            self.lines[self._current].update(tick, self)
+        if not self.lines[-1].ended: # if the last line is not ended ...
+            self.lines[self._current].update(tick, self) # ... update the dialogue boxes current line and ...
             if self.lines[self._current].ended:# & self.current < len(self.lines):
-                self._current += 1
-        elif not self._complete and self.lines[-1].ended:
+                self._current += 1 # ... if the current line is ended, switch to the next line in the block
+        elif not self._complete and self.lines[-1].ended: # replace complete with self._blockended?
             self._complete = True
             
     def render(self, surface):
