@@ -33,13 +33,12 @@ class Game:
         
         self.player = None
         
-        # peripherals TODO initialize peripherals externally in launch.py [05/15/22]
-        self.camera = None #camera.Camera(self, (0,0))
+        # peripherals
+        self.camera = None
         self.ui = None
         self.fader = None
         
-        self.active_object = None # active_object?
-        self.renderlist = []
+        self.active_object = None
 
     def start(self):
         self.running = True
@@ -69,9 +68,6 @@ class Game:
         #self.camera.render(self)
         if self.active_object is not None:
             self.active_object.render(self.display)
-        #for item in self.renderlist:
-        #    item.render(self.display)
-        
         
         pygame.display.flip()
         self.display.fill((0,0,0))

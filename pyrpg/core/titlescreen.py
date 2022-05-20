@@ -6,7 +6,6 @@ class TitleScreen:
         self.splash = pygame.Surface((640, 480)).convert()
         self.splash.fill((0,0,0))
         
-        #self.font = pygame.font.Font("../dpcomic.ttf", 40)
         self.titlelabel = game.ui.theme.basic_font.render("Skeleton Game", 0, (0xff,0xff,0xff))        
         self.exiting = False
     
@@ -38,10 +37,6 @@ class TitleScreen:
             else:
                 self.game.exiting = True
                 
-#        if (not self.exiting) and self.game.fader.faded_out:
- #       else:
-  #          self.game.exiting = True
-        
     def render(self, surface):
         x = (surface.get_width() - self.titlelabel.get_width()) / 2
         y = 90
@@ -49,13 +44,3 @@ class TitleScreen:
         self.game.ui["newexit"].render(surface)
         self.game.fader.render(surface)
 
-if __name__ == "__main__":
-    pygame.init()
-
-    display = pygame.display.set_mode((400,400))
-
-    titlescreen = TitleScreen()
-
-    titlescreen.render(display)
-    pygame.display.flip()
-    pygame.time.wait(3000)

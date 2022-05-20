@@ -11,7 +11,7 @@ class Fader:
         self.curtain.set_alpha(self.opacity)
         
         self.speed = 0
-        self.velocity = -self.speed # really?
+        self.velocity = 0 # really?
         self.faded_in = False # as in a cycle
         self.faded_out = False
         self.fading = False
@@ -48,8 +48,6 @@ class Fader:
             self.faded_in = self.opacity == 0
             self.faded_out = self.opacity == 255
             self.fading = not (self.faded_in or self.faded_out)            
-            #if self.game.camera.scene: # this shouldn't be here, but where should it go? [05/19/22]
-            #    self.game.scene.paused = False
                 
     def render(self, surface):    
         surface.blit(self.curtain,(0,0))
