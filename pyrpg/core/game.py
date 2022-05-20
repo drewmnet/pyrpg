@@ -34,10 +34,11 @@ class Game:
         self.player = None
         
         # peripherals TODO initialize peripherals externally in launch.py [05/15/22]
-        self.camera = camera.Camera(self, (0,0))
-        #self.ui = 
-        #self.fader =
-        self.focus = None
+        self.camera = None #camera.Camera(self, (0,0))
+        self.ui = None
+        self.fader = None
+        
+        self.active_object = None # active_object?
         self.renderlist = []
 
     def start(self):
@@ -55,8 +56,8 @@ class Game:
         self.clock.tick(60)
         self.tick = (self.tick + 1) % 0xffffffff
         
-        if self.focus is not None:
-            self.focus.update(self.tick)
+        if self.active_object is not None:
+            self.active_object.update(self.tick)
         #self.player.get_events()
         
         #self.player.update()
@@ -66,8 +67,8 @@ class Game:
         
     def render(self):
         #self.camera.render(self)
-        if self.focus is not None:
-            self.focus.render(self.display)
+        if self.active_object is not None:
+            self.active_object.render(self.display)
         #for item in self.renderlist:
         #    item.render(self.display)
         

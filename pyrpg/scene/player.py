@@ -10,14 +10,16 @@ class Player(mob.Mob):
         mob.Mob.__init__(self, filename, self.uid, game)
 
         self.a_button = 0 # TODO re/move this; only for testing; or should I?
+        
+        self.exiting = False
 
     def get_events(self):
         for event in pygame.event.get(): #[1]
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    #self.game.exiting = True
-                    #self.game.fader.fade_out()
-                    self.game.focus = self.game.titlescreen
+                    self.exiting = True
+                    self.game.fader.fade_out()
+                    #self.game.focus = self.game.titlescreen
                 if event.key == pygame.K_RETURN:
                     if self.game.camera.following == None:
                         self.game.camera.following = self

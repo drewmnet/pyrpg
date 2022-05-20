@@ -40,7 +40,7 @@ class Camera(pygame.Rect):
         # test this when fader is re-implemented [05/07/22]
         self.center = self.following.center #???
 
-    def tile_prep(self, layer, col, row):
+    def tile_prep(self, layer, col, row): # prep_first_two_layers
         x_offset = self.x % self.tilesize
         y_offset = self.y % self.tilesize
 
@@ -48,6 +48,8 @@ class Camera(pygame.Rect):
         r_index = self.y // self.tilesize + row
     
         index = self.scene.get_tile(layer, (c_index,r_index))
+        #bottom_index = self.scene.get_tile("bottom", (c_index,r_index))
+        #middle_index = self.scene.get_tile("middle", (c_index,r_index))
 
         x = col * self.tilesize - x_offset
         y = row * self.tilesize - y_offset

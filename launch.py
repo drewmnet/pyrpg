@@ -15,12 +15,21 @@ SCALE = 3
 pygame.init()
 
 game = pyrpg.core.Game(DISPLAYSIZE, TILESIZE, SCALE)
+game.camera = pyrpg.core.Camera(game, (0,0))
+game.fader = pyrpg.core.Fader(game, DISPLAYSIZE)
 
 game.ui = pyrpg.ui.UI(game)
 game.ui["newexit"] = pyrpg.ui.Selector(game.ui, ["New Game", "Quit to Desktop"], 230, 260, 180)
-game.titlescreen = pyrpg.core.TitleScreen(game)
+#game.renderlist = [ game.titlescreen, game.fader ]
 
-game.focus = game.titlescreen
+# titlescreen and gameplay are collections of objects stored within a single object
+game.titlescreen = pyrpg.core.TitleScreen(game)
+game.gameplay = pyrpg.core.Gameplay(game)
+
+game.active_object = game.titlescreen
+game.active_object.start()
+#game.control = game.fader
+#active_object
 
 # title menu
 # if "New Game" is selected:
