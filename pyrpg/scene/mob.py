@@ -10,20 +10,19 @@ tupadd = lambda t1, t2: tuple(map(sum, zip(t1,t2)))
 
 def load_sprite(filename, scale):
     filepath = os.path.join('data', 'sprites', filename)
-    #print(filepath)
-    ri = pygame.image.load(filepath) # raw image
-    ri = pygame.transform.scale(ri, (ri.get_width() * scale, ri.get_height() * scale))
-    #raw_image.set_colorkey((128,0,0), pygame.RLEACCEL)
+    
+    raw_image = pygame.image.load(filepath)
+    ri_width = raw_image.get_width() * scale
+    ri_height = raw_image.get_height() * scale
+    raw_image = pygame.transform.scale(raw_image, (ri_width, ri_height))
+    
     w = 16 * scale
     h = 16 * scale
-    
-    # strip format; single frame for each direction
-    #  remove this and replace with animated sprite [05/08/22]
     sprite = { "south": None, "north": None, "west": None, "east": None }
-    sprite["south"] = ri.subsurface((0,0,w,h))
-    sprite["north"] = ri.subsurface((0,h*1,w,h))
-    sprite["west"] = ri.subsurface((0,h*2,w,h))
-    sprite["east"] = ri.subsurface((0,h*3,w,h))
+    sprite["south"] = raw_image.subsurface((0, 0, w, h))
+    sprite["north"] = raw_image.subsurface((0, h*1, w, h))
+    sprite["west"] = raw_image.subsurface((0, h*2, w, h))
+    sprite["east"] = raw_image.subsurface((0, h*3, w, h))
     
     return sprite
 
@@ -39,12 +38,12 @@ class Mob(pygame.Rect):
         self.facing = "south"
         self.direction = (0,0)
         self.steps = 0
-        self.moving = False
+        self.is_moving = False
         self.scene = None
 
         if filename not in self.game.sprite_db:
             self.game.sprite_db[filename] = load_sprite(filename, game.scale)
-            if self.game.verbose:
+            if self.game.is_verbose:
                 print(f"spritesheet '{filename}' not found; loading")
         #pygame.Rect.__init__(self, self.game.sprite_db[self.sprite].rect)
         self.spr_fn = filename
@@ -66,8 +65,8 @@ class Mob(pygame.Rect):
         # self.scene.tilesize?
 
     def move(self, direction):
-        if not self.moving: # separate from line 78 so facing direction could change independently and
-            self.facing = direction # ... prevents the facing direction change while moving
+        if not self.is_moving: # separate from line 78 so facing direction could change independently and
+            self.facing = direction # ... prevents the facing direction change while is_moving
         
         cell = tupadd(self.directions[direction], self.tile_location()) # map grid cell (col,row)
         no_mob = True # what the hell is this? (March 17, 2022)
@@ -78,19 +77,19 @@ class Mob(pygame.Rect):
         
         tile = self.game.camera.scene.get_tile("collide", cell)        
         nocollide = tile == '0' and no_mob
-        movable = not self.moving #and not self.game.fader.fading
+        movable = not self.is_moving #and not self.game.fader.fading
         
         if nocollide and movable:
             self.direction = self.directions[direction]
-            self.moving = True
+            self.is_moving = True
     
     def update(self):
-        if self.moving:
+        if self.is_moving:
             self.x += self.direction[0] * 2
             self.y += self.direction[1] * 2
             self.steps += 2 # all the 2s here are connected
             if self.steps >= self.game.tilesize:
-                self.moving = False
+                self.is_moving = False
                 self.steps = 0
                 self.direction = (0,0)
 

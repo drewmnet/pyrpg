@@ -34,7 +34,7 @@ class Camera(pygame.Rect):
         for mob_fn in self.scene.mobs:
             self.game.mob_db[mob_fn].spawn(filename)
             
-        self.game.player.moving = False
+        self.game.player.is_moving = False
         #self.game.scene.script.init()
         #self.update() # centre camera on camera.following before fade_in begins
         # test this when fader is re-implemented [05/07/22]

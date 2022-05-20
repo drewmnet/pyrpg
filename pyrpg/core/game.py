@@ -3,8 +3,8 @@ import pygame
 from . import camera
 
 class Game:
-    exiting = False
-    verbose = True
+    is_exiting = False
+    is_verbose = True
         
     def __init__(self, displaysize, tilesize, scale):
         # pygame genesis
@@ -15,7 +15,7 @@ class Game:
         self.display = pygame.display.set_mode(displaysize)
         self.tilesize = tilesize * scale
         self.scale = scale
-        if self.verbose:
+        if self.is_verbose:
             print(f"tilesize: {tilesize}")
             print(f"scale: {scale}")
         
@@ -23,8 +23,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.tick = 0
         
-        self.running = False
-        self.ending = False # when True and self.fader.faded_out: end program
+        self.is_running = False
+        self.is_ending = False
                 
         # data dicts
         self.scene_db = {}
@@ -41,15 +41,15 @@ class Game:
         self.active_object = None
 
     def start(self):
-        self.running = True
+        self.is_running = True
         self.main()
         
     def main(self):
-        while self.running:
+        while self.is_running:
             self.update()
             self.render()
             
-            self.running = not self.exiting
+            self.is_running = not self.is_exiting
         
     def update(self):
         self.clock.tick(60)

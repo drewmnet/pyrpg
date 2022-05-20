@@ -11,13 +11,13 @@ class Player(mob.Mob):
 
         self.a_button = 0 # TODO re/move this; only for testing; or should I?
         
-        self.exiting = False
+        self.is_exiting = False
 
     def get_events(self):
         for event in pygame.event.get(): #[1]
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.exiting = True
+                    self.is_exiting = True
                     self.game.fader.fade_out()
                     #self.game.focus = self.game.titlescreen
                 if event.key == pygame.K_RETURN:
@@ -25,10 +25,8 @@ class Player(mob.Mob):
                         self.game.camera.following = self
                     else:
                         self.game.camera.following = None
-                #if event.key == pygame.K_RSHIFT:
-                #    self.game.text_hud.add("Placeholder text")
 
-        keys = pygame.key.get_pressed() #[1] won't work without calling pygame.event.get()
+        keys = pygame.key.get_pressed()
 
         #if not self.game.fader.fading:
         if keys[pygame.K_DOWN]:

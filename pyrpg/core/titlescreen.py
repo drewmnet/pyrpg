@@ -7,14 +7,13 @@ class TitleScreen:
         self.splash.fill((0,0,0))
         
         self.titlelabel = game.ui.theme.basic_font.render("Skeleton Game", 0, (0xff,0xff,0xff))        
-        self.exiting = False
+        self.is_exiting = False
     
     def start(self):
         self.game.fader.fade_in()
     
     def update(self, tick):
-        """ Assumes game.ui["newexit"] has been instantiated """
-        if not self.game.fader.fading:
+        if not self.game.fader.is_fading:
             self.game.ui["newexit"].get_input()
             if self.game.ui["newexit"].rvalue == 0:
                 # clear events
@@ -23,19 +22,18 @@ class TitleScreen:
                 self.game.ui["newexit"].rvalue = None
                 self.game.fader.fade_out()
             if self.game.ui["newexit"].rvalue == 1:
-                self.exiting = True
+                self.is_exiting = True
                 self.game.fader.fade_out()
                 self.game.ui["newexit"].rvalue = None
                 
         self.game.fader.update(tick)
         
-        if self.game.fader.faded_out:
-            if not self.exiting:
-                print("monk")
+        if self.game.fader.is_faded_out:
+            if not self.is_exiting:
                 self.game.active_object = self.game.gameplay
                 self.game.active_object.start()
             else:
-                self.game.exiting = True
+                self.game.is_exiting = True
                 
     def render(self, surface):
         x = (surface.get_width() - self.titlelabel.get_width()) / 2
