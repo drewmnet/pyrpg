@@ -16,9 +16,7 @@ class TitleScreen:
         if not self.game.fader.is_fading:
             self.game.ui["newexit"].get_input()
             if self.game.ui["newexit"].rvalue == 0:
-                # clear events
                 self.game.camera.setup("podunk.tmx")
-                #self.game.active_object = self.game.camera
                 self.game.ui["newexit"].rvalue = None
                 self.game.fader.fade_out()
             if self.game.ui["newexit"].rvalue == 1:

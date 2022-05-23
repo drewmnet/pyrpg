@@ -2,16 +2,19 @@ import operator
 
 import pygame
 
+def y_sort(mobs):
+    return sorted(mobs, key=operator.attrgetter('y'))
+
 class Camera(pygame.Rect):
-    def __init__(self, game, location):
+    def __init__(self, game, geometry):
         self.game = game
-        pygame.Rect.__init__(self, location+game.display.get_size())
         self.tilesize = game.tilesize
+        pygame.Rect.__init__(self, geometry)
         
-        self.cols = 0
-        self.rows = 0
-        self.blank = None
-        self.following = None       
+        self.cols = 0 # display_cols?
+        self.rows = 0 # display_rows?
+        self.blank = None # blank_tile
+        self.following = None
 
         self.scene_rect = pygame.Rect((0,0,0,0))
     
@@ -35,70 +38,81 @@ class Camera(pygame.Rect):
             self.game.mob_db[mob_fn].spawn(filename)
             
         self.game.player.is_moving = False
-        #self.game.scene.script.init()
-        #self.update() # centre camera on camera.following before fade_in begins
-        # test this when fader is re-implemented [05/07/22]
         self.center = self.following.center #???
 
-    def tile_prep(self, layer, col, row): # prep_first_two_layers
+    def prep_bottom_middle_tiles(self, col, row):
         x_offset = self.x % self.tilesize
         y_offset = self.y % self.tilesize
 
         c_index = self.x // self.tilesize + col
         r_index = self.y // self.tilesize + row
     
-        index = self.scene.get_tile(layer, (c_index,r_index))
-        #bottom_index = self.scene.get_tile("bottom", (c_index,r_index))
-        #middle_index = self.scene.get_tile("middle", (c_index,r_index))
+        bottom_index = self.scene.get_tile("bottom", (c_index,r_index))
+        middle_index = self.scene.get_tile("middle", (c_index,r_index))
 
         x = col * self.tilesize - x_offset
         y = row * self.tilesize - y_offset
 
-        if index != "0":
-            tile = self.scene.tileset[index]
-            return (tile, x, y)
-        else:			
-            return ("0", x, y)
+        bottom_tile = None
+        middle_tile = None
+
+        if middle_index != "0":
+            middle_tile = self.scene.tileset[middle_index]
+        if bottom_index != "0":
+            bottom_tile = self.scene.tileset[bottom_index]
+
+        return (bottom_tile, middle_tile, x, y)
+
+    def prep_top_tile(self, col, row):
+        x_offset = self.x % self.tilesize
+        y_offset = self.y % self.tilesize
+
+        c_index = self.x // self.tilesize + col
+        r_index = self.y // self.tilesize + row
     
-    def y_sort(self): # TODO move this back to utilities [05/14/22]
-        return sorted(self.scene.get_mobs(), key=operator.attrgetter('y'))
+        top_index = self.scene.get_tile("top", (c_index,r_index))
+
+        x = col * self.tilesize - x_offset
+        y = row * self.tilesize - y_offset
+
+        top_tile = None
+        if top_index != "0":
+            top_tile = self.scene.tileset[top_index]
+        
+        return (top_tile, x, y)
             
     def update(self, tick): # this needn't be called every cycle
-        #x,y = self.following.center
         self.scene.update(tick)
-        if self.following: # clamp stuff        
-            if self.center[0] < self.following.center[0]:
-                self.move_ip((2,0))
-            elif self.center[0] > self.following.center[0]:
-                self.move_ip((-2,0))
-            if self.center[1] < self.following.center[1]:
-                self.move_ip((0,2))
-            elif self.center[1] > self.following.center[1]:
-                self.move_ip((0,-2))
-            self.clamp_ip(self.scene_rect) # the good news: it's not this that's making the cpu jump to 20%
-
-    def render(self, surface):    
-        for row in range(self.rows): # draw the bottom and middle tile layers
-            for col in range(self.cols):
-                bottom_t, x, y = self.tile_prep("bottom", col, row)
-                middle_t, x, y = self.tile_prep("middle", col, row)
-                # yes, the above line overrides the x and y values
-                #  in the line above it
-                
-                if bottom_t != "0":
-                    surface.blit(bottom_t, (x,y))
-                elif bottom_t == "0":
-                    surface.blit(self.blank, (x,y))
-
-                if middle_t != "0":
-                    surface.blit(middle_t, (x,y))
-
-        if self.scene.mobs: # draw the sprites
-            #for sprite in game.scene.sprites.values():
-            for sprite in self.y_sort():
-                sprite.render(surface, x_off = -self.x, y_off = -self.y)
         
-        for row in range(self.rows): # draw the top layer
+        if self.center[0] < self.following.center[0]:
+            self.move_ip((2,0))
+        elif self.center[0] > self.following.center[0]:
+            self.move_ip((-2,0))
+        
+        if self.center[1] < self.following.center[1]:
+            self.move_ip((0,2))
+        elif self.center[1] > self.following.center[1]:
+            self.move_ip((0,-2))
+        
+        self.clamp_ip(self.scene_rect)
+
+    def render(self, surface):
+        for row in range(self.rows):
             for col in range(self.cols):
-                tile, x, y = self.tile_prep("top", col, row)
-                if tile != "0": surface.blit(tile, (x, y))
+                bottom_tile, middle_tile, x, y = self.prep_bottom_middle_tiles(col, row)
+                
+                if bottom_tile != None:
+                    surface.blit(bottom_tile, (x,y))
+
+                if middle_tile != None:
+                    surface.blit(middle_tile, (x,y))
+
+        if self.scene.mobs:
+            sorted_mobs = y_sort(self.scene.get_mobs())
+            for sprite in sorted_mobs:
+                sprite.render(surface, self.x, self.y)
+        
+        for row in range(self.rows):
+            for col in range(self.cols):
+                tile, x, y = self.prep_top_tile(col, row)
+                if tile != None: surface.blit(tile, (x, y))

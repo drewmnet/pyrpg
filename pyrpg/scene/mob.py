@@ -93,8 +93,8 @@ class Mob(pygame.Rect):
                 self.steps = 0
                 self.direction = (0,0)
 
-    def render(self, surface, x_off=0, y_off=0):
-        x = self.x + x_off
-        y = self.y + y_off
-        surface.blit(self.game.sprite_db[self.spr_fn][self.facing], (x,y))
+    def render(self, surface, x_off, y_off):
+        x = self.x - x_off
+        y = self.y - y_off
+        surface.blit(self.game.sprite_db[self.spr_fn][self.facing], (x, y))
 

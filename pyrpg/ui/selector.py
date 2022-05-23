@@ -1,29 +1,18 @@
-#!/usr/bin/env python3
-
-# c6b7be
-
-#light = (0xfa, 0xfb, 0xf6)
-#shade = (0xc6, 0xb7, 0xbe)
-#grey = (0x56, 0x5a, 0x75)
-#dark = (0x0f, 0x0f, 0x1b)
-
 import pygame
 
 class Selector:
-    def __init__(self, ui, labels, x, y, width):
+    def __init__(self, ui, labels, geometry):
         self.ui = ui
-        #self.font = pygame.font.Font("../dpcomic.ttf", 28)
-        #self.font_h = self.font.get_height()
+        #self.theme = ui.theme
         self.labels = labels # a list strings
         
-        #self.pad = 5
         self.fontheight = ui.theme.basic_font.get_height()
         self.padding = ui.theme.padding
         height = len(self.labels) * self.fontheight + self.padding + 2
-        self.rect = (x, y, width, height)        
+        self.rect = geometry + tuple([height]) # (x, y, w) + (h)
         
         self.value = 0
-        self.rvalue = None
+        self.rvalue = None # return value
         
     def render_label(self, label, value):
         if value == self.value:
@@ -49,20 +38,4 @@ class Selector:
                     self.value = (self.value - 1) % len(self.labels)
                 elif event.key == pygame.K_RCTRL: # 'A' button
                     self.rvalue = self.value
-
-if __name__ == '__main__':
-    pygame.init()
-    clock = pygame.time.Clock()
-
-    display = pygame.display.set_mode((500,500))
-
-    sb = SelectorBox(["Items", "Gear", "Status"], 10, 10, 100)
-
-    while 1:
-        clock.tick(60)
-        sb.get_input()
-
-        sb.render(display)
-
-        pygame.display.flip()
 

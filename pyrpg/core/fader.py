@@ -3,8 +3,7 @@ import pygame
 clamp = lambda n, minn, maxn: max(min(maxn,n), minn)
 
 class Fader:
-    def __init__(self, game, geometry):
-        self.game = game
+    def __init__(self, geometry):
         self.curtain = pygame.Surface(geometry)
         self.curtain.fill((0,0,0))
         self.opacity = 0

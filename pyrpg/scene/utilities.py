@@ -7,29 +7,12 @@ from . import tileset
 
 tupadd = lambda t1, t2: tuple(map(sum, zip(t1,t2)))
 
-def load_image(filename, colourkey=None):
+def load_tileset(filename, width, height, scale, firstgid):
     image = pygame.image.load(filename)
-    if image != None:
-        image = image.convert()
-        if colourkey != None:
-            if colourkey == -1:
-                colourkey = image.get_at((0,0))
-            image.set_colorkey(colourkey, pygame.RLEACCEL)
-
-        return image
-    else:
-        print("failed to load image '{}' ".format(filename))
-
-def load_tileset(filename, width, height, scale=1, colourkey=None, firstgid=1):
-    image = pygame.image.load(filename)
-    print("before scale", image)
     if scale > 1:
-        image = pygame.transform.scale(image, (image.get_width() * scale, image.get_height() * scale))
-        print("after scale", image)
-        #width = width * scale
-        #height = height * scale
-        
-    print(width, height)
+        w = image.get_width() * scale
+        h = image.get_height() * scale
+        image = pygame.transform.scale(image, (w, h))
     
     gid = int(firstgid)
     textures = {}
@@ -45,15 +28,11 @@ def load_tileset(filename, width, height, scale=1, colourkey=None, firstgid=1):
     return textures
 
 def get_metadata(root, scene):
-    #
     scene.cols = int(root.attrib["width"])
     scene.rows = int(root.attrib["height"])
-    #
     scene.tile_w = int(root.attrib["tilewidth"])
     scene.tile_h = int(root.attrib["tileheight"])
-    scene.tilesize = scene.game.tilesize # assumes a square tile
-    # TODO ^ this should be set to game.tilesize
-    #scene.tilesize = scene.game.tilesize
+    scene.tilesize = scene.game.tilesize
     scene.tileset = tileset.Tileset(scene.tilesize, scene.tilesize)
 
 def get_scripts(root, scene):
@@ -77,13 +56,8 @@ def get_tileset(root, scene):
         for tsx in tsxroot.iter("tileset"):
             for i in tsx.iter("image"):
                 filename = i.attrib["source"]
-                try:
-                    colourkey = get_colourkey(i.attrib["trans"])
-                except:
-                    colourkey = None
-                    print("no colourkey")
                 firstgid = tilesettag.attrib["firstgid"]
-                scene.tileset.update(filename, scene.game.scale, colourkey, firstgid)
+                scene.tileset.update(filename, scene.game.scale, firstgid)
                 
 def get_layers(root, scene):
     for layer in root.iter("layer"):
@@ -116,6 +90,7 @@ def get_objects(root, scene):
                     pygame.quit()
                     exit()
                 scene.mobs.append("player")
+                scene.live_mobs["player"] = scene.game.player
                 scene.defaults["player"] = (col,row)
             elif rectattribs["type"] == "mob":
                 #m = mob.Mob(scene.game, rectattribs["Filename"], rectattribs["id"])
@@ -130,28 +105,16 @@ def get_objects(root, scene):
                 x = (float(rectattribs["x"]) // scene.tile_w) * scene.tile_w
                 y = (float(rectattribs["y"]) // scene.tile_h) * scene.tile_h
                 facing = rectattribs["facing"] # TODO
-#               try:
                 c = int(rectattribs["col"])
                 r = int(rectattribs["row"])
                 scene.switches[uid] = [pygame.Rect((x,y,scene.tile_w,scene.tile_h)), scenefile, (c,r), facing]
-#                except:
-                    #print("defaulting to map defined placement position")
-#                    scene.switches[uid] = [pygame.Rect((x,y,scene.tile_w,scene.tile_h)), uid, None, facing]
-            #elif rectattribs["type"] == "static":
-            #	filepath = "content/image/" + rectattribs["Filename"]
-            #	name = rectattribs["name"]
-            #	scene.sprites[uid] = sprite.Static(filepath, name)
-            #	scene.sprites[uid].scene = scene
-            #	scene.sprites[uid].place(col,row)
 
 def load_tmx(filename, scene):
     tree = ET.parse(os.path.join("data", "scene", filename))
     root = tree.getroot()
     get_metadata(root, scene)
-    get_scripts(root, scene)
+    #get_scripts(root, scene)
     get_tileset(root, scene)
     get_layers(root, scene)
     get_objects(root, scene)
-    
-    
-    
+
