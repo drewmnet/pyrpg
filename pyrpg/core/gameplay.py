@@ -33,6 +33,11 @@ class Gameplay:
             self.game.camera.setup(self.switching_to, self.spawning_at)
             self.game.player.facing = self.facing
             self.is_switching = False
+            
+            self.game.player.is_moving = False
+            self.game.player.steps = 0
+            self.game.player.direction = (0,0)
+            
             self.game.fader.fade_in()
             
         
