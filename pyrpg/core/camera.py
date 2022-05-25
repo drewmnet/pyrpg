@@ -15,10 +15,12 @@ class Camera(pygame.Rect):
         self.rows = 0 # display_rows?
         self.blank = None # blank_tile
         self.following = None
+        self.scene = None
 
         self.scene_rect = pygame.Rect((0,0,0,0))
     
-    def setup(self, filename): # get filename from game.scene_db
+    def setup(self, filename, loc=None): # get filename from game.scene_db
+        #print(f"location: {loc}")
         if filename not in self.game.scene_db:
             #self.load_scene(filename)
             print(f"'{filename}' not found")
@@ -35,7 +37,13 @@ class Camera(pygame.Rect):
         self.scene_rect.h = (self.scene.rows) * self.tilesize
         # reset mobs in scene to default positions and facings
         for mob_fn in self.scene.mobs:
-            self.game.mob_db[mob_fn].spawn(filename)
+            if mob_fn != "player":
+                self.game.mob_db[mob_fn].spawn(filename)
+        
+        if loc is not None:
+            self.game.mob_db["player"].spawn(filename, loc)
+        else:
+            self.game.mob_db["player"].spawn(filename)
             
         self.game.player.is_moving = False
         self.center = self.following.center #???

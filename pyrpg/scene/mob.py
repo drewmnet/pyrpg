@@ -53,10 +53,13 @@ class Mob(pygame.Rect):
         self.x = col * self.game.tilesize
         self.y = row * self.game.tilesize
 
-    def spawn(self, filename): # filename = Scene.uid and dict key    
+    def spawn(self, filename, loc=None): # filename = Scene.uid and dict key    
         self.scene = self.game.scene_db[filename] # TODO deprecate [05/15/22]
         # these lines below are the key to this method
-        col, row = self.scene.defaults[self.uid]
+        if loc is not None:
+            col, row = loc
+        else:
+            col, row = self.scene.defaults[self.uid]
         self.place(col, row)
         self.facing = "south"
 

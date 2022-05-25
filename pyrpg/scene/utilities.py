@@ -102,8 +102,8 @@ def get_objects(root, scene):
             elif rectattribs["type"] == "switch":
                 uid = rectattribs["id"]
                 scenefile = rectattribs["Filename"]
-                x = (float(rectattribs["x"]) // scene.tile_w) * scene.tile_w
-                y = (float(rectattribs["y"]) // scene.tile_h) * scene.tile_h
+                x = (float(rectattribs["x"]) // scene.tile_w) * scene.tile_w * scene.game.scale
+                y = (float(rectattribs["y"]) // scene.tile_h) * scene.tile_h * scene.game.scale
                 facing = rectattribs["facing"] # TODO
                 c = int(rectattribs["col"])
                 r = int(rectattribs["row"])
