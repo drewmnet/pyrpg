@@ -86,15 +86,18 @@ class Mob(pygame.Rect):
             self.direction = self.directions[direction]
             self.is_moving = True
     
+    def reset(self):
+        self.is_moving = False
+        self.steps = 0
+        self.direction = (0,0)
+    
     def update(self):
         if self.is_moving:
             self.x += self.direction[0] * 2
             self.y += self.direction[1] * 2
             self.steps += 2 # all the 2s here are connected
             if self.steps >= self.game.tilesize:
-                self.is_moving = False
-                self.steps = 0
-                self.direction = (0,0)
+                self.reset()
 
     def render(self, surface, x_off, y_off):
         x = self.x - x_off

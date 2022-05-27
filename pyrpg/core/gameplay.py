@@ -19,7 +19,6 @@ class Gameplay:
             if self.game.player.is_exiting and self.game.fader.is_faded_out:
                 self.game.active_object = self.game.titlescreen
                 self.game.active_object.start()
-        self.game.fader.update(tick)
         
         for switch in self.game.camera.scene.switches.values():
             if self.game.player.colliderect(switch[0]) and not self.is_switching:
@@ -33,14 +32,11 @@ class Gameplay:
             self.game.camera.setup(self.switching_to, self.spawning_at)
             self.game.player.facing = self.facing
             self.is_switching = False
-            
-            self.game.player.is_moving = False
-            self.game.player.steps = 0
-            self.game.player.direction = (0,0)
-            
+            self.game.player.reset()
             self.game.fader.fade_in()
             
-        
+        self.game.fader.update(tick)
+                
     def render(self, surface):
         self.game.camera.render(surface)
         self.game.fader.render(surface)
