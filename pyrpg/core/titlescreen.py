@@ -6,7 +6,7 @@ class TitleScreen:
         self.splash = pygame.Surface(self.game.display.get_size()).convert()
         self.splash.fill((0,0,0))
         
-        self.title_label = game.ui.theme.basic_font.render("Skeleton Game", 0, (0xff,0xff,0xff))        
+        self.title_label = game.ui_basic_font.render("Skeleton Game", 0, (0xff,0xff,0xff))        
         self.is_exiting = False
     
     def start(self):

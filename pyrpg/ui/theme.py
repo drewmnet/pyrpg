@@ -11,7 +11,7 @@ class Theme:
     # dialogue attributes
     background = palette["grey"] # None for total transparency
     padding = 5
-    
+
     # fonts
     basic_font = pygame.font.Font("dpcomic.ttf", 28)
 

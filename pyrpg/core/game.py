@@ -34,6 +34,19 @@ class Game:
         self.camera = None
         self.ui = None
         self.fader = None
+        
+        # ui theme
+        # colour palette; GameBoy style
+        self.ui_palette = { "light": (0xfa, 0xfb, 0xf6),
+                         "shade": (0xc6, 0xb7, 0xbe),
+                         "grey": (0x56, 0x5a, 0x75),
+                         "dark": (0x0f, 0x0f, 0x1b)
+                       }
+        # dialogue attributes
+        self.ui_background = self.ui_palette["grey"] # None for total transparency
+        self.ui_padding = 5
+        # fonts
+        self.ui_basic_font = pygame.font.Font("dpcomic.ttf", 28)
 
         self.active_object = None
         self.is_running = False
