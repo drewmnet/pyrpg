@@ -23,6 +23,8 @@ class Dialogue:
         # TODO error check for text list size > self.block_size [05/14/22]
         for l, text in enumerate(self.text[self.current_block:self.current_block+self.block_size]):
             self.lines[l].load_text(text, self)
+        for line in range(3):
+            
         
     def update(self, tick):        
         for event in pygame.event.get():
