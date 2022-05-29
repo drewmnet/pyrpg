@@ -24,14 +24,14 @@ class TitleScreen:
                 self.game.fader.fade_out()
                 self.game.ui["newexit"].rvalue = None
                 
-        self.game.fader.update(tick)
-        
         if self.game.fader.is_faded_out:
             if not self.is_exiting:
                 self.game.active_object = self.game.gameplay
                 self.game.active_object.start()
             else:
                 self.game.is_exiting = True
+        
+        self.game.fader.update(tick)
                 
     def render(self, surface):
         x = (surface.get_width() - self.titlelabel.get_width()) / 2
