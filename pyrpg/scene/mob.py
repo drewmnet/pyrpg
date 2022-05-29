@@ -4,7 +4,7 @@ import os
 
 tupadd = lambda t1, t2: tuple(map(sum, zip(t1,t2)))
 
-def load_sprite(filename, scale):
+def load_sprite(filename, scale): #(filename, scale, control_function)
     filepath = os.path.join('data', 'sprites', filename)
     
     raw_image = pygame.image.load(filepath)

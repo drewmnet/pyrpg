@@ -15,12 +15,12 @@ SCALE = 3
 pygame.init()
 
 game = pyrpg.core.Game(DISPLAYSIZE, TILESIZE, SCALE)
-game.camera = pyrpg.core.Camera(game, (0,0)+DISPLAYSIZE)
+game.camera = pyrpg.core.Camera(game, (0, 0)+DISPLAYSIZE)
 game.fader = pyrpg.core.Fader(DISPLAYSIZE)
 
 game.ui = pyrpg.ui.UI(game)
 labels = ["New Game", "Quit to Desktop"]
-geometry = (230, 260, 180) # (x, y, w)
+geometry = (230, 260, 180)  # (x, y, w)
 game.ui["newexit"] = pyrpg.ui.Selector(game.ui, labels, geometry)
 
 game.player = pyrpg.scene.Player("spr_felix.png", game)
