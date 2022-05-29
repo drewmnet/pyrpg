@@ -1,12 +1,10 @@
 import os
 import pygame
 from . import filepaths
-#from . import utilities
 
 def load_sprite(filename, scale):
     filepath = os.path.join(filepaths.image_path, filename)
     raw_image = pygame.image.load(filepath)
-    #raw_image.set_colorkey((128,0,0), pygame.RLEACCEL)
     w = 16 * scale
     h = 16 * scale
     sprite = { "south": None, "north": None, "west": None, "east": None }
@@ -23,15 +21,12 @@ class Sprite:
         self.game = game
         self.game.sprite_db[self.filename] = self        
         data = load_sprite(os.path.join(filepaths.image_path, filename))        
-        ###
-        # Mob inherits from pygame.Rect;
-        # pygame.Rect is instantiated using self.rect
         self.rect = pygame.Rect(data["rect"])
         self.cols = data["cols"]
         self.rows = data["rows"]
         self.cells = data["cells"]
         self.x_off, self.y_off = data["offsets"]
-        ###
+
         self.pattern = [0,1,0,2]
         self.facings = { "south": 0, "north": 1, "east": 2, "west": 3 }
         

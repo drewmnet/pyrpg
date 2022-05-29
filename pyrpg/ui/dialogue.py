@@ -14,17 +14,17 @@ class Dialogue:
         self.is_block_ended = False
         self.is_complete = False
         
-        self.rect = (x, y, 10,10) # TODO [05/13/22]
+        self.rect = (x, y, 10,10)
         self.pad = 5
     
     def load_block(self):
         self.current_line = 0
         self.is_block_ended = False
         # TODO error check for text list size > self.block_size [05/14/22]
-        for l, text in enumerate(self.text[self.current_block:self.current_block+self.block_size]):
+        i_start = self.current_block
+        i_end = self.current_block + self.block_size
+        for l, text in enumerate(self.text[i_start:i_end]):
             self.lines[l].load_text(text, self)
-        for line in range(3):
-            
         
     def update(self, tick):        
         for event in pygame.event.get():
@@ -33,7 +33,7 @@ class Dialogue:
                     if self.is_complete:
                         print("end of text")
                         exit()
-                    elif self.is_block_ended: # move this [05/27/22]
+                    elif self.is_block_ended:
                         nbi = self.current_block+self.block_size # next block index
                         next_block = self.text[nbi:nbi+self.block_size]
                         if not next_block:
@@ -43,7 +43,7 @@ class Dialogue:
                             print("next block")
                             self.current_block += self.block_size
                             self.load_block()
-                    else: # skip to the end of the dialogue block
+                    else: # skip to end of block
                         for line in self.lines:
                             line.cursor = line.text_length-1
                             line.update(tick, self)
@@ -58,8 +58,6 @@ class Dialogue:
             
     def render(self, surface):
         if self.is_visible:
-            #if self.background is not None:
-                #pygame.draw.rect(surface, grey, self.rect)
             for i, line in enumerate(self.lines):
                 x = self.rect[0] + self.pad
                 y = self.rect[1] + self.font.get_height() * i + self.pad
@@ -71,7 +69,7 @@ class DialogueLine:
         self.cursor = 0
         
         self.text = ""
-        self.text_length = 0 #len(self.text)+1
+        self.text_length = 0
                 
         self.is_ended = False
 

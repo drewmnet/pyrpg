@@ -1,4 +1,4 @@
-import pygame # leave this here; it makes the printing cleaner
+import pygame
 
 from . import core
 from . import ui

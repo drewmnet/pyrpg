@@ -11,26 +11,23 @@ class Camera(pygame.Rect):
         self.tilesize = game.tilesize
         pygame.Rect.__init__(self, geometry)
         
-        self.cols = 0 # display_cols?
-        self.rows = 0 # display_rows?
-        self.blank = None # blank_tile
+        self.display_cols = 0
+        self.display_rows = 0
         self.following = None
         self.scene = None
 
         self.scene_rect = pygame.Rect((0,0,0,0))
     
-    def setup(self, filename, loc=None): # get filename from game.scene_db
-        #print(f"location: {loc}")
+    def setup(self, filename, loc=None):
         if filename not in self.game.scene_db:
-            #self.load_scene(filename)
             print(f"'{filename}' not found")
             pygame.quit()
             exit()
+            
         self.scene = self.game.scene_db[filename]
-    
         self.following = self.game.player
-        self.cols = self.w // self.tilesize + 2 # for the display
-        self.rows = self.h // self.tilesize + 2 # not to be confused with the cols/rows of Map2D
+        self.display_cols = self.w // self.tilesize + 2
+        self.display_rows = self.h // self.tilesize + 2
         self.blank = pygame.Surface((self.tilesize,self.tilesize)).convert()
         self.blank.fill((0,0,0))
         self.scene_rect.w = (self.scene.cols) * self.tilesize
@@ -46,7 +43,7 @@ class Camera(pygame.Rect):
             self.game.mob_db["player"].spawn(filename)
             
         self.game.player.is_moving = False
-        self.center = self.following.center #???
+        self.center = self.following.center
 
     def prep_bottom_middle_tiles(self, col, row):
         x_offset = self.x % self.tilesize
@@ -89,7 +86,7 @@ class Camera(pygame.Rect):
         
         return (top_tile, x, y)
             
-    def update(self, tick): # this needn't be called every cycle
+    def update(self, tick):
         self.scene.update(tick)
         
         if self.center[0] < self.following.center[0]:
@@ -105,9 +102,9 @@ class Camera(pygame.Rect):
         self.clamp_ip(self.scene_rect)
 
     def render(self, surface):
-        for row in range(self.rows):
-            for col in range(self.cols):
-                bottom_tile, middle_tile, x, y = self.prep_bottom_middle_tiles(col, row)
+        for drow in range(self.display_rows):
+            for dcol in range(self.display_cols):
+                bottom_tile, middle_tile, x, y = self.prep_bottom_middle_tiles(dcol, drow)
                 
                 if bottom_tile != None:
                     surface.blit(bottom_tile, (x,y))
@@ -120,7 +117,7 @@ class Camera(pygame.Rect):
             for sprite in sorted_mobs:
                 sprite.render(surface, self.x, self.y)
         
-        for row in range(self.rows):
-            for col in range(self.cols):
-                tile, x, y = self.prep_top_tile(col, row)
+        for drow in range(self.display_rows):
+            for dcol in range(self.display_cols):
+                tile, x, y = self.prep_top_tile(dcol, drow)
                 if tile != None: surface.blit(tile, (x, y))

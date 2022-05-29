@@ -1,10 +1,11 @@
-
+import pygame
 
 class Gameplay:
     def __init__(self, game):
         self.game = game
         
         self.is_switching = False
+        self.is_exiting = False
         self.switching_to = None
         self.facing = None
     
@@ -13,10 +14,16 @@ class Gameplay:
     
     def update(self, tick):
         if not self.game.fader.is_fading:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.is_exiting = True
+                        self.game.fader.fade_out()
+
             self.game.player.get_events()            
             self.game.camera.update(tick)
             
-            if self.game.player.is_exiting and self.game.fader.is_faded_out:
+            if self.is_exiting and self.game.fader.is_faded_out:
                 self.game.active_object = self.game.titlescreen
                 self.game.active_object.start()
         

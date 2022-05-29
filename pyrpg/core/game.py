@@ -23,9 +23,6 @@ class Game:
         self.clock = pygame.time.Clock()
         self.tick = 0
         
-        self.is_running = False
-        self.is_ending = False
-                
         # data dicts
         self.scene_db = {}
         self.sprite_db = {}
@@ -39,6 +36,7 @@ class Game:
         self.fader = None
         
         self.active_object = None
+        self.is_running = False
 
     def start(self):
         self.is_running = True
@@ -48,8 +46,6 @@ class Game:
         while self.is_running:
             self.update()
             self.render()
-            
-            self.is_running = not self.is_exiting
         
     def update(self):
         self.clock.tick(60)
@@ -57,15 +53,8 @@ class Game:
         
         if self.active_object is not None:
             self.active_object.update(self.tick)
-        #self.player.get_events()
-        
-        #self.player.update()
-        #self.camera.update()
-        # reset the flags
-        #self.exiting = False
         
     def render(self):
-        #self.camera.render(self)
         if self.active_object is not None:
             self.active_object.render(self.display)
         

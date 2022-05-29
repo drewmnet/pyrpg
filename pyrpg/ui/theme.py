@@ -1,8 +1,5 @@
 import pygame
 
-pygame.init() # for testing; call this before initializing Theme
-
-# done this way to make it immutable
 class Theme:
     # colour palette; GameBoy style
     palette = { "light": (0xfa, 0xfb, 0xf6),
@@ -17,8 +14,4 @@ class Theme:
     
     # fonts
     basic_font = pygame.font.Font("dpcomic.ttf", 28)
-    # what other types of fonts will there be? [05/13/22]
-    
-    
-#theme = Theme()
-#print(f'{theme.background}')
+

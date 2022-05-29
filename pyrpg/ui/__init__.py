@@ -1,6 +1,3 @@
-print("importing ui module")
-print("importing UI class [EMPTY]")
-
 import pygame
 
 from . import theme

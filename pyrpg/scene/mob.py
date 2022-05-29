@@ -1,10 +1,6 @@
-#
-
 import pygame
 
 import os
-
-#import utilities
 
 tupadd = lambda t1, t2: tuple(map(sum, zip(t1,t2)))
 
@@ -45,7 +41,6 @@ class Mob(pygame.Rect):
             self.game.sprite_db[filename] = load_sprite(filename, game.scale)
             if self.game.is_verbose:
                 print(f"spritesheet '{filename}' not found; loading")
-        #pygame.Rect.__init__(self, self.game.sprite_db[self.sprite].rect)
         self.spr_fn = filename
         self.game.mob_db[self.uid] = self
         
@@ -53,9 +48,8 @@ class Mob(pygame.Rect):
         self.x = col * self.game.tilesize
         self.y = row * self.game.tilesize
 
-    def spawn(self, filename, loc=None): # filename = Scene.uid and dict key    
-        self.scene = self.game.scene_db[filename] # TODO deprecate [05/15/22]
-        # these lines below are the key to this method
+    def spawn(self, filename, loc=None):    
+        self.scene = self.game.scene_db[filename]
         if loc is not None:
             col, row = loc
         else:
@@ -65,24 +59,22 @@ class Mob(pygame.Rect):
 
     def tile_location(self):
         return (self.x // self.game.tilesize, self.y // self.game.tilesize)
-        # self.scene.tilesize?
 
     def move(self, direction):
-        if not self.is_moving: # separate from line 78 so facing direction could change independently and
-            self.facing = direction # ... prevents the facing direction change while is_moving
+        if not self.is_moving:
+            self.facing = direction
         
-        cell = tupadd(self.directions[direction], self.tile_location()) # map grid cell (col,row)
-        no_mob = True # what the hell is this? (March 17, 2022)
-        for uid in self.scene.mobs: # should 'mob' be 'uid'?
+        cell = tupadd(self.directions[direction], self.tile_location())
+        has_mob = False
+        for uid in self.scene.mobs:
             m = self.game.mob_db[uid]
-            if m != self and cell == m.tile_location():
-                no_mob = False
+            if m != self and not cell == m.tile_location():
+                has_mob = True
         
         tile = self.game.camera.scene.get_tile("collide", cell)        
-        nocollide = tile == '0' and no_mob
-        movable = not self.is_moving #and not self.game.fader.fading
-        
-        if nocollide and movable:
+        is_colliding = tile != '0' and not has_mob
+        is_movable = not self.is_moving
+        if not is_colliding and is_movable:
             self.direction = self.directions[direction]
             self.is_moving = True
     
@@ -95,7 +87,7 @@ class Mob(pygame.Rect):
         if self.is_moving:
             self.x += self.direction[0] * 2
             self.y += self.direction[1] * 2
-            self.steps += 2 # all the 2s here are connected
+            self.steps += 2 # replace these 2s with a variable
             if self.steps >= self.game.tilesize:
                 self.reset()
 

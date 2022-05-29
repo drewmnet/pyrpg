@@ -40,12 +40,11 @@ def get_scripts(root, scene):
         for script in propertie.iter("property"):
             if script.attrib['name'] == "script":
                 scene.script = importlib.import_module("scripts."+script.attrib['value'])
-                #m.hi()
 
-def get_colourkey(hex_string): # format: "ffffff"
-    r = int(hex_string[:2],16)
-    g = int(hex_string[2:4],16)
-    b = int(hex_string[4:6],16)
+def get_colourkey(hex_value):
+    r = int(hex_value[:2],16)
+    g = int(hex_value[2:4],16)
+    b = int(hex_value[4:6],16)
     return (r,g,b)
 
 def get_tileset(root, scene):
@@ -93,10 +92,8 @@ def get_objects(root, scene):
                 scene.live_mobs["player"] = scene.game.player
                 scene.defaults["player"] = (col,row)
             elif rectattribs["type"] == "mob":
-                #m = mob.Mob(scene.game, rectattribs["Filename"], rectattribs["id"])
                 m = mob.Mob(rectattribs["Filename"], rectattribs["id"], scene.game)
-                #m.dialogue = rectattribs["dialogue"] # TODO restore
-                scene.mobs.append(m.uid) # scene.mobs is a list of ints (in str format)
+                scene.mobs.append(m.uid)
                 scene.defaults[m.uid] = (col,row)
                 
             elif rectattribs["type"] == "switch":
