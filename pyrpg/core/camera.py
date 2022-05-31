@@ -88,7 +88,9 @@ class Camera(pygame.Rect):
             
     def update(self, tick):
         self.scene.update(tick)
-        
+    
+        self.center = self.following.center    
+    
         if self.center[0] < self.following.center[0]:
             self.move_ip((2,0))
         elif self.center[0] > self.following.center[0]:
