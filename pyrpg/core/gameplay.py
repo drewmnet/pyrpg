@@ -10,7 +10,7 @@ class Gameplay:
         self.facing = None
     
     def start(self):
-        self.game.fader.fade_in()
+        self.game.fader.fade(-6, (0, 0, 0))
     
     def update(self, tick):
         if not self.game.fader.is_fading:
@@ -18,7 +18,7 @@ class Gameplay:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.is_exiting = True
-                        self.game.fader.fade_out()
+                        self.game.fader.fade(6, (0, 0, 0))
 
             self.game.player.get_events()            
             self.game.camera.update(tick)
@@ -33,14 +33,14 @@ class Gameplay:
                 self.switching_to = switch[1]
                 self.spawning_at = switch[2]
                 self.facing = switch[3]
-                self.game.fader.fade_out()
+                self.game.fader.fade(6, (0, 0, 0))
                 
         if self.is_switching and self.game.fader.is_faded_out:
             self.game.camera.setup(self.switching_to, self.spawning_at)
             self.game.player.facing = self.facing
             self.is_switching = False
             self.game.player.reset()
-            self.game.fader.fade_in()
+            self.game.fader.fade(-6, (0, 0, 0))
             
         self.game.fader.update(tick)
                 
