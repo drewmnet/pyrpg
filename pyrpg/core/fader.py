@@ -1,11 +1,10 @@
 import pygame
 
-clamp = lambda n, minn, maxn: max(min(maxn,n), minn)
 
 class Fader:
     def __init__(self, geometry):
         self.curtain = pygame.Surface(geometry)
-        self.curtain.fill((0,0,0))
+        self.curtain.fill((0, 0, 0))
         self.opacity = 0
         self.curtain.set_alpha(self.opacity)
         
@@ -29,11 +28,11 @@ class Fader:
         
         if self.is_fading:		
             self.opacity += self.speed
-            self.opacity = clamp(self.opacity, 0, 255) # rename clamp; it keeps the number within a range
+            self.opacity = max(min(255, self.opacity), 0)
             self.curtain.set_alpha(self.opacity)
             self.is_faded_in = self.opacity == 0
             self.is_faded_out = self.opacity == 255
             self.is_fading = not (self.is_faded_in or self.is_faded_out)            
                 
     def render(self, surface):    
-        surface.blit(self.curtain,(0,0))
+        surface.blit(self.curtain,(0, 0))
