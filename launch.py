@@ -28,6 +28,7 @@ pyrpg.scene.Map2D("podunk.tmx", game)
 pyrpg.scene.Map2D("house_interior.tmx", game)
 game.camera.following = game.player
 
+#game.battle_handler = pyrpg.combat.BattleHandler(game)
 game.titlescreen = pyrpg.core.TitleScreen(game)
 game.gameplay = pyrpg.core.Gameplay(game)
 
