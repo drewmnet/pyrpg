@@ -10,7 +10,7 @@ class TitleScreen:
         self.is_exiting = False
     
     def start(self):
-        self.game.fader.fade(-6, (0, 0, 0))
+        self.game.fader.fade_in()
     
     def update(self, tick):
         if not self.game.fader.is_fading:
@@ -18,10 +18,10 @@ class TitleScreen:
             if self.game.ui["newexit"].rvalue == 0: # 'New Game'
                 self.game.camera.setup("podunk.tmx")
                 self.game.ui["newexit"].rvalue = None
-                self.game.fader.fade(6, (0, 0, 0))
+                self.game.fader.fade_out()
             if self.game.ui["newexit"].rvalue == 1: # 'Quit to Desktop'
                 self.is_exiting = True
-                self.game.fader.fade(6, (0, 0, 0))
+                self.game.fader.fade_out()
                 self.game.ui["newexit"].rvalue = None
                 
         if self.game.fader.is_faded_out:

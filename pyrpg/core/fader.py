@@ -18,6 +18,9 @@ class Fader:
         self.opacity = (speed < 0) * 255
         self.curtain.set_alpha(self.opacity)
         self.is_fading = True
+        
+    def fade_out(self): self.fade(6, (0, 0, 0))
+    def fade_in(self): self.fade(-6, (0, 0, 0))
 
     def update(self, _):  # tick will be passed but not used
         if self.is_faded_in:
