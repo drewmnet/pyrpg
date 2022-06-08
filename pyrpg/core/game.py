@@ -33,8 +33,8 @@ class Game:
 
         # peripherals
         self.camera = None
-        self.ui = None
         self.fader = None
+        self.ui = None
         
         # ui theme
         # colour palette; GameBoy style

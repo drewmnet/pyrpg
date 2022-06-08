@@ -1,5 +1,5 @@
-from random import random as rnd
 import pygame
+from random import random as rnd
 
 
 def invert_colours(surface):
