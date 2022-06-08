@@ -21,7 +21,10 @@ class EnemyBattler:
         image = pygame.image.load(filename)
         image_neg = invert_colours(image)
         self.images = [image, image_neg]
-        
+
+class Enemy:
+    def __init__(self, battler):
+        self.battler = battler        
         self.is_flashing = False
         self.is_complete = False
         self.f_interval = 0
@@ -47,32 +50,5 @@ class EnemyBattler:
                 self.is_complete = True
                 
     def render(self, surface):
-        display.blit(self.images[self.frame], (10,10))
-
-if __name__ == "__main__":
-    pygame.init()
-    display = pygame.display.set_mode((640,480))
-    display.fill((0,0,0xff))
-    clock = pygame.time.Clock()
-
-    battler = EnemyBattler("tree.png")
-
-    second = pygame.time.get_ticks()
-
-    running = True
-    while running:
-        clock.tick(60)
-        
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    battler.flash()
-
-        if battler.is_complete:
-            print("battler done flashing")
-        
-        battler.update()
-        battler.render(display)
-        pygame.display.flip()
-        display.fill((0,0,0))
+        display.blit(self.battler.images[self.frame], (10,10))
 

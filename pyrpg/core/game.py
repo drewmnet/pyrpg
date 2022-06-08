@@ -27,6 +27,7 @@ class Game:
         self.scene_db = {}
         self.sprite_db = {}
         self.mob_db = {}
+        self.battler_db = {}
 
         self.player = None
 
