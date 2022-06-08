@@ -1,5 +1,6 @@
 import pygame
 
+
 class TitleScreen:
     def __init__(self, game):
         self.game = game

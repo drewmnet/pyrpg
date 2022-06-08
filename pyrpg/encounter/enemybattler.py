@@ -1,3 +1,4 @@
+from random import random as rnd
 import pygame
 
 
@@ -17,14 +18,16 @@ def invert_colours(surface):
     return image_neg
 
 class EnemyBattler:
-    def __init__(self, filename):
+    def __init__(self, filename, game):
         image = pygame.image.load(filename)
         image_neg = invert_colours(image)
         self.images = [image, image_neg]
+        game.battler_db[filename] = self
 
 class Enemy:
-    def __init__(self, battler):
-        self.battler = battler        
+    def __init__(self, battler, statblock):
+        self.battler = battler
+        self.statblock = statblock
         self.is_flashing = False
         self.is_complete = False
         self.f_interval = 0
@@ -34,7 +37,14 @@ class Enemy:
     def flash(self):
         self.is_flashing = True
         self.f_interval = pygame.time.get_ticks()
-        
+
+    def attack(self, target):
+        roll = int(rnd()*20)+1
+        if roll + self.statblock["agi"] >= target.statblock["agi"]:
+            dmg = int(rnd()*6) + 1 + self.statblock["str"]
+        else:
+            dmg = 0
+
     def update(self):
         self.is_complete = False
         f = pygame.time.get_ticks() - self.f_interval
@@ -48,6 +58,7 @@ class Enemy:
                 self.frame = 0
                 self.is_flashing = False
                 self.is_complete = True
+                # attack target
                 
     def render(self, surface):
         display.blit(self.battler.images[self.frame], (10,10))
