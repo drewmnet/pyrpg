@@ -32,9 +32,6 @@ game.camera.following = game.player
 game.titlescreen = pyrpg.core.TitleScreen(game)
 game.gameplay = pyrpg.core.Gameplay(game)
 
-for switch in game.scene_db["podunk.tmx"].switches.values():
-    print(switch)
-
 game.active_object = game.titlescreen
 game.active_object.start()
 
