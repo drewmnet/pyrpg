@@ -17,7 +17,7 @@ pygame.init()
 
 # 1. Instantiate Game object, initializing pygame and setting up display
 game = pyrpg.core.Game(DISPLAYSIZE, TILESIZE, SCALE)
-game.camera = pyrpg.core.Camera(game, (0, 0)+DISPLAYSIZE)
+game.camera = pyrpg.core.Camera(game, (0, 0) + DISPLAYSIZE)
 game.fader = pyrpg.core.Fader(DISPLAYSIZE)
 
 # 2. Initialize user interface objects
@@ -29,13 +29,13 @@ game.ui["newexit"] = pyrpg.ui.Selector(game.ui, labels, geometry)
 # 3. Setup basic game loops
 game.titlescreen = pyrpg.core.TitleScreen(game)
 game.gameplay = pyrpg.core.Gameplay(game)
-#game.battle_handler = pyrpg.combat.BattleHandler(game)
+# game.battle_handler = pyrpg.combat.BattleHandler(game)
 
 # 4. Initialize statblocks; passed to player, mob, enemy, etc.,
-#...
+# ...
 
 # 5. Initialize sprites, mobs, enemy battlers, etc.,
-#...
+# ...
 
 # 6. Setup player and load a default map
 game.player = pyrpg.scene.Player("spr_felix.png", game)
