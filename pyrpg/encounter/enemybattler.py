@@ -28,11 +28,14 @@ class Enemy:
     def __init__(self, battler, statblock):
         self.battler = battler
         self.statblock = statblock
+        
+        # all related to flashing
         self.is_flashing = False
         self.is_complete = False
         self.f_interval = 0
         self.frame = 0
         self.tick = 0
+        # flashing
         
     def flash(self):
         self.is_flashing = True

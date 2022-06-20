@@ -48,3 +48,16 @@ for member in player_party:
     member.select_target(enemy_party)
 
 
+'''
+    Enemy mob touches player
+    Fade out and fade into encounter screen
+    Get input for each live player character
+     [ a selector box ]
+    Get commands for each enemy and their targets
+    Roll for initiative
+    Begin combat
+    Resolve status effects
+    Get input for each live player character
+
+'''
+
