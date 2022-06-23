@@ -27,7 +27,7 @@ class Mob(pygame.Rect):
     directions = { "south": (0,1), "north": (0,-1), "east": (1,0), "west": (-1,0) }
 
     def __init__(self, filename, uid, game): # filename is for the sprite
-        pygame.Rect.__init__(self, (0,0,16*game.scale-2*game.scale,16*game.scale-2*game.scale))
+        pygame.Rect.__init__(self, (0, 0, 16 * game.scale - 2 * game.scale, 16 * game.scale - 2 * game.scale))
         self.uid = uid
         self.game = game
         
@@ -45,8 +45,8 @@ class Mob(pygame.Rect):
         self.game.mob_db[self.uid] = self
         
     def place(self, col, row):
-        self.x = col * self.game.tilesize
-        self.y = row * self.game.tilesize
+        self.x = col * self.game.tilesize + (self.game.scale * 2) // 2
+        self.y = row * self.game.tilesize + self.game.scale * 2
 
     def spawn(self, filename, loc=None):    
         self.scene = self.game.scene_db[filename]
@@ -102,6 +102,6 @@ class Mob(pygame.Rect):
 
     def render(self, surface, x_off, y_off):
         x = self.x - (self.game.scale * 2) // 2 - x_off
-        y = self.y - (self.game.scale * 2) // 2 - y_off
+        y = self.y - (self.game.scale * 2) - y_off
         surface.blit(self.game.sprite_db[self.spr_fn][self.facing], (x, y))
 
