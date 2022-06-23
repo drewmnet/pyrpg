@@ -14,7 +14,8 @@ class Player(mob.Mob):
             self.move("south")
         elif keys[pygame.K_UP]:
             self.move("north")
-        elif keys[pygame.K_RIGHT]:
+        
+        if keys[pygame.K_RIGHT]:
             self.move("east")
         elif keys[pygame.K_LEFT]:
             self.move("west")

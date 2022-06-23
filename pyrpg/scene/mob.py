@@ -27,7 +27,7 @@ class Mob(pygame.Rect):
     directions = { "south": (0,1), "north": (0,-1), "east": (1,0), "west": (-1,0) }
 
     def __init__(self, filename, uid, game): # filename is for the sprite
-        pygame.Rect.__init__(self, (0,0,16*game.scale,16*game.scale))
+        pygame.Rect.__init__(self, (0,0,16*game.scale-2*game.scale,16*game.scale-2*game.scale))
         self.uid = uid
         self.game = game
         
@@ -60,23 +60,32 @@ class Mob(pygame.Rect):
     def tile_location(self):
         return (self.x // self.game.tilesize, self.y // self.game.tilesize)
 
+    def collision(self, direction):
+        for c in range(4):
+            x_axis, y_axis = direction
+            xm = (self.x + x_axis * 2) + (c % 2) * self.w
+            ym = (self.y + y_axis * 2) + (c // 2) * self.h
+
+            col = xm // self.game.tilesize
+            row = ym // self.game.tilesize
+                
+            if self.scene.get_tile("collide", (col, row)) != "0":
+                return True
+
     def move(self, direction):
-        if not self.is_moving:
-            self.facing = direction
-        
-        cell = tupadd(self.directions[direction], self.tile_location())
-        has_mob = False
-        for uid in self.scene.mobs:
-            m = self.game.mob_db[uid]
-            if m != self and not cell == m.tile_location():
-                has_mob = True
-        
-        tile = self.game.camera.scene.get_tile("collide", cell)        
-        is_colliding = tile != '0' and not has_mob
-        is_movable = not self.is_moving
-        if not is_colliding and is_movable:
-            self.direction = self.directions[direction]
+        x_axis, y_axis = self.directions[direction]
+        self.facing = direction
+
+        if x_axis != 0 or y_axis != 0:
             self.is_moving = True
+        if x_axis == 0 and y_axis == 0:
+            self.is_moving = False
+
+        if self.is_moving:        
+            if not self.collision((x_axis, 0)):
+                self.move_ip(x_axis * 2, 0)
+            if not self.collision((0, y_axis)):
+                self.move_ip(0, y_axis * 2)
     
     def reset(self):
         self.is_moving = False
@@ -88,11 +97,11 @@ class Mob(pygame.Rect):
             self.x += self.direction[0] * 2
             self.y += self.direction[1] * 2
             self.steps += 2 # replace these 2s with a variable
-            if self.steps >= self.game.tilesize:
+            if self.steps >= self.game.tilesize // 2:
                 self.reset()
 
     def render(self, surface, x_off, y_off):
-        x = self.x - x_off
-        y = self.y - y_off
+        x = self.x - (self.game.scale * 2) // 2 - x_off
+        y = self.y - (self.game.scale * 2) // 2 - y_off
         surface.blit(self.game.sprite_db[self.spr_fn][self.facing], (x, y))
 
