@@ -28,8 +28,6 @@ class Camera(pygame.Rect):
         self.following = self.game.player
         self.display_cols = self.w // self.tilesize + 2
         self.display_rows = self.h // self.tilesize + 2
-        self.blank = pygame.Surface((self.tilesize,self.tilesize)).convert()
-        self.blank.fill((0,0,0))
         self.scene_rect.w = (self.scene.cols) * self.tilesize
         self.scene_rect.h = (self.scene.rows) * self.tilesize
         # reset mobs in scene to default positions and facings
@@ -58,14 +56,11 @@ class Camera(pygame.Rect):
         x = col * self.tilesize - x_offset
         y = row * self.tilesize - y_offset
 
-        bottom_tile = None
+        bottom_tile = self.scene.tileset[bottom_index]
         middle_tile = None
-
         if middle_index != "0":
             middle_tile = self.scene.tileset[middle_index]
-        if bottom_index != "0":
-            bottom_tile = self.scene.tileset[bottom_index]
-
+        
         return (bottom_tile, middle_tile, x, y)
 
     def prep_top_tile(self, col, row):
@@ -88,19 +83,7 @@ class Camera(pygame.Rect):
             
     def update(self, tick):
         self.scene.update(tick)
-    
-        self.center = self.following.center    
-    
-        if self.center[0] < self.following.center[0]:
-            self.move_ip((2,0))
-        elif self.center[0] > self.following.center[0]:
-            self.move_ip((-2,0))
-        
-        if self.center[1] < self.following.center[1]:
-            self.move_ip((0,2))
-        elif self.center[1] > self.following.center[1]:
-            self.move_ip((0,-2))
-        
+        self.center = self.following.center
         self.clamp_ip(self.scene_rect)
 
     def render(self, surface):
@@ -108,8 +91,8 @@ class Camera(pygame.Rect):
             for dcol in range(self.display_cols):
                 bottom_tile, middle_tile, x, y = self.prep_bottom_middle_tiles(dcol, drow)
                 
-                if bottom_tile != None:
-                    surface.blit(bottom_tile, (x,y))
+                #if bottom_tile != None:
+                surface.blit(bottom_tile, (x,y))
 
                 if middle_tile != None:
                     surface.blit(middle_tile, (x,y))

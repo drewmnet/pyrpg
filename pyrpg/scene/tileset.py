@@ -1,5 +1,7 @@
 import os
 
+import pygame
+
 from . import utilities
 
 class Tileset:
@@ -17,7 +19,10 @@ class Tileset:
                                           scale,
                                           firstgid)
         self.textures.update(textures)
-                
+        
+        self.textures['0'] = pygame.Surface((self.width, self.height)).convert()
+        self.textures['0'].fill((0,0,0))
+
     def __getitem__(self, key=None):
         if key is not None:
             return self.textures[key]
